@@ -20,6 +20,8 @@ class OfferController extends AbstractController
 {
     /**
      * @Route("/", name="offer_index", methods={"GET"})
+     * @param OfferRepository $offerRepository
+     * @return Response
      */
     public function index(OfferRepository $offerRepository): Response
     {
@@ -30,6 +32,8 @@ class OfferController extends AbstractController
 
     /**
      * @Route("/new", name="offer_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -53,6 +57,8 @@ class OfferController extends AbstractController
 
     /**
      * @Route("/{id}", name="offer_show", methods={"GET"})
+     * @param Offer $offer
+     * @return Response
      */
     public function show(Offer $offer): Response
     {
@@ -63,6 +69,9 @@ class OfferController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="offer_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Offer $offer
+     * @return Response
      */
     public function edit(Request $request, Offer $offer): Response
     {
@@ -83,6 +92,9 @@ class OfferController extends AbstractController
 
     /**
      * @Route("/{id}", name="offer_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Offer $offer
+     * @return Response
      */
     public function delete(Request $request, Offer $offer): Response
     {

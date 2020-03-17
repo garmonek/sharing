@@ -23,7 +23,7 @@ class OfferType extends AbstractType
     {
         $builder
             //todo set district as one for whole form
-                //todo form shoudl contain many offers with same district
+                //todo form should contain many offers with same district
             ->add('district')
             ->add('description')
             //todo active as true on offer create, can edit on edit

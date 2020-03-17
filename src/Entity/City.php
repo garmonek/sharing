@@ -23,7 +23,7 @@ class City extends AbstractTimestampableEntity
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\District", mappedBy="city", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\District", mappedBy="city", orphanRemoval=true, cascade={"persist"})
      *
      * @var ArrayCollection
      */
