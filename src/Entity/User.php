@@ -115,11 +115,29 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WebImage", mappedBy="user", orphanRemoval=true)
+     */
+    private $webImages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="user", orphanRemoval=true)
+     */
+    private $image;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Offer", mappedBy="user", orphanRemoval=true)
+     */
+    private $offers;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->webImages = new ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->offers = new ArrayCollection();
     }
 
     /**
@@ -287,6 +305,99 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($role->getUser() === $this) {
                 $role->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|WebImage[]
+     */
+    public function getWebImages(): Collection
+    {
+        return $this->webImages;
+    }
+
+    public function addWebImage(WebImage $webImage): self
+    {
+        if (!$this->webImages->contains($webImage)) {
+            $this->webImages[] = $webImage;
+            $webImage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWebImage(WebImage $webImage): self
+    {
+        if ($this->webImages->contains($webImage)) {
+            $this->webImages->removeElement($webImage);
+            // set the owning side to null (unless already changed)
+            if ($webImage->getUser() === $this) {
+                $webImage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImage(): Collection
+    {
+        return $this->image;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->image->contains($image)) {
+            $this->image[] = $image;
+            $image->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->image->contains($image)) {
+            $this->image->removeElement($image);
+            // set the owning side to null (unless already changed)
+            if ($image->getUser() === $this) {
+                $image->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Offer[]
+     */
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): self
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers[] = $offer;
+            $offer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): self
+    {
+        if ($this->offers->contains($offer)) {
+            $this->offers->removeElement($offer);
+            // set the owning side to null (unless already changed)
+            if ($offer->getUser() === $this) {
+                $offer->setUser(null);
             }
         }
 
