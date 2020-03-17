@@ -12,38 +12,41 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OfferRepository")
  */
-class Offer
+class Offer extends AbstractTimestampableEntity
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\WebImage", inversedBy="offers")
+     *
+     * @var ArrayCollection
      */
     private $webImages;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers")
+     *
+     * @var ArrayCollection
      */
     private $images;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag")
+     *
+     * @var ArrayCollection
      */
     private $tags;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var User
      */
     private $user;
 
     /**
      * @ORM\Column(type="boolean")
+     *
+     * @var boolean
      */
     private $active;
 
@@ -54,41 +57,36 @@ class Offer
      *     joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="offer_id", referencedColumnName="id", unique=true)}
      * )
+     *
+     * @var ArrayCollection
      */
     private $exchangeTags;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @var string
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\District", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var District
      */
     private $district;
 
     /**
-     * @ORM\Column(type="datetime")
+     *
+     * Offer constructor.
      */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
     public function __construct()
     {
         $this->webImages = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->exchangeTags = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -99,6 +97,11 @@ class Offer
         return $this->webImages;
     }
 
+    /**
+     * @param WebImage $webImage
+     *
+     * @return $this
+     */
     public function addWebImage(WebImage $webImage): self
     {
         if (!$this->webImages->contains($webImage)) {
@@ -108,6 +111,11 @@ class Offer
         return $this;
     }
 
+    /**
+     * @param WebImage $webImage
+     *
+     * @return $this
+     */
     public function removeWebImage(WebImage $webImage): self
     {
         if ($this->webImages->contains($webImage)) {
@@ -125,6 +133,11 @@ class Offer
         return $this->images;
     }
 
+    /**
+     * @param Image $image
+     *
+     * @return $this
+     */
     public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
@@ -134,6 +147,11 @@ class Offer
         return $this;
     }
 
+    /**
+     * @param Image $image
+     *
+     * @return $this
+     */
     public function removeImage(Image $image): self
     {
         if ($this->images->contains($image)) {
@@ -151,6 +169,11 @@ class Offer
         return $this->tags;
     }
 
+    /**
+     * @param Tag $tag
+     *
+     * @return $this
+     */
     public function addTag(Tag $tag): self
     {
         if (!$this->tags->contains($tag)) {
@@ -160,6 +183,11 @@ class Offer
         return $this;
     }
 
+    /**
+     * @param Tag $tag
+     *
+     * @return $this
+     */
     public function removeTag(Tag $tag): self
     {
         if ($this->tags->contains($tag)) {
@@ -169,11 +197,20 @@ class Offer
         return $this;
     }
 
+    /**
+     *
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -181,11 +218,20 @@ class Offer
         return $this;
     }
 
+    /**
+     *
+     * @return bool|null
+     */
     public function getActive(): ?bool
     {
         return $this->active;
     }
 
+    /**
+     * @param bool $active
+     *
+     * @return $this
+     */
     public function setActive(bool $active): self
     {
         $this->active = $active;
@@ -201,6 +247,11 @@ class Offer
         return $this->exchangeTags;
     }
 
+    /**
+     * @param Tag $exchangeTag
+     *
+     * @return $this
+     */
     public function addExchangeTag(Tag $exchangeTag): self
     {
         if (!$this->exchangeTags->contains($exchangeTag)) {
@@ -210,6 +261,11 @@ class Offer
         return $this;
     }
 
+    /**
+     * @param Tag $exchangeTag
+     *
+     * @return $this
+     */
     public function removeExchangeTag(Tag $exchangeTag): self
     {
         if ($this->exchangeTags->contains($exchangeTag)) {
@@ -219,11 +275,20 @@ class Offer
         return $this;
     }
 
+    /**
+     *
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     *
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -231,38 +296,23 @@ class Offer
         return $this;
     }
 
+    /**
+     *
+     * @return District|null
+     */
     public function getDistrict(): ?District
     {
         return $this->district;
     }
 
+    /**
+     * @param District|null $district
+     *
+     * @return $this
+     */
     public function setDistrict(?District $district): self
     {
         $this->district = $district;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -13,56 +13,53 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\WebImageRepository")
  *
  */
-class WebImage
+class WebImage extends AbstractTimestampableEntity
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @var string
      */
     private $url;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="webImages")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var User
      */
     private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Offer", mappedBy="webImages")
+     *
+     * @var ArrayCollection
      */
     private $offers;
 
+    /**
+     *
+     * WebImage constructor.
+     */
     public function __construct()
     {
         $this->offers = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    /**
+     *
+     * @return string|null
+     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
+    /**
+     * @param string $url
+     *
+     * @return $this
+     */
     public function setUrl(string $url): self
     {
         $this->url = $url;
@@ -70,35 +67,20 @@ class WebImage
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
+    /**
+     *
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -114,6 +96,11 @@ class WebImage
         return $this->offers;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function addOffer(Offer $offer): self
     {
         if (!$this->offers->contains($offer)) {
@@ -124,6 +111,11 @@ class WebImage
         return $this;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function removeOffer(Offer $offer): self
     {
         if ($this->offers->contains($offer)) {

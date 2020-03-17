@@ -5,11 +5,9 @@
 
 namespace App\Entity;
 
-use DateTimeInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
@@ -22,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("email", groups={"registration"}, message="email_in_use")
  * @UniqueEntity("username", groups={"registration"}, message="username_in_use")
  */
-class User implements UserInterface
+class User extends AbstractTimestampableEntity implements UserInterface
 {
     /**
      * @var int
@@ -38,15 +36,6 @@ class User implements UserInterface
      * @var string
      */
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    private $id;
 
     /**
      * @ORM\Column(type="string", length=80)
@@ -86,28 +75,6 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @Gedmo\Timestampable(on="create")
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\DateTime
-     *
-     * @var DateTimeInterface
-     */
-    private $createdAt;
-
-    /**
-     * @Gedmo\Timestampable(on="update")
-     *
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\DateTime
-     *
-     * @var DateTimeInterface
-     */
-    private $updatedAt;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Role", mappedBy="user", orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -116,16 +83,22 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WebImage", mappedBy="user", orphanRemoval=true)
+     *
+     * @var ArrayCollection
      */
     private $webImages;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="user", orphanRemoval=true)
+     *
+     * @var ArrayCollection
      */
     private $image;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Offer", mappedBy="user", orphanRemoval=true)
+     *
+     * @var ArrayCollection
      */
     private $offers;
 
@@ -159,14 +132,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -230,47 +195,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTimeInterface|null $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt(?DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @return DateTimeInterface|null
-     *
-     */
-    public function getUpdatedAt(): ?DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param DateTimeInterface|null $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Role[]
      */
     public function getRoles(): Collection
@@ -319,6 +243,11 @@ class User implements UserInterface
         return $this->webImages;
     }
 
+    /**
+     * @param WebImage $webImage
+     *
+     * @return $this
+     */
     public function addWebImage(WebImage $webImage): self
     {
         if (!$this->webImages->contains($webImage)) {
@@ -329,6 +258,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param WebImage $webImage
+     *
+     * @return $this
+     */
     public function removeWebImage(WebImage $webImage): self
     {
         if ($this->webImages->contains($webImage)) {
@@ -350,6 +284,11 @@ class User implements UserInterface
         return $this->image;
     }
 
+    /**
+     * @param Image $image
+     *
+     * @return $this
+     */
     public function addImage(Image $image): self
     {
         if (!$this->image->contains($image)) {
@@ -360,6 +299,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Image $image
+     *
+     * @return $this
+     */
     public function removeImage(Image $image): self
     {
         if ($this->image->contains($image)) {
@@ -381,6 +325,11 @@ class User implements UserInterface
         return $this->offers;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function addOffer(Offer $offer): self
     {
         if (!$this->offers->contains($offer)) {
@@ -391,6 +340,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function removeOffer(Offer $offer): self
     {
         if ($this->offers->contains($offer)) {

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
@@ -14,6 +17,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class TagRepository extends ServiceEntityRepository
 {
+    /**
+     * TagRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
@@ -34,7 +41,7 @@ class TagRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+     */
 
     /*
     public function findOneBySomeField($value): ?Tag
@@ -46,5 +53,5 @@ class TagRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+     */
 }

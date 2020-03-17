@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
@@ -15,13 +18,17 @@ use Doctrine\ORM\QueryBuilder;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * UserRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
     /**
-     * Create query builder.
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {

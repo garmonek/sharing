@@ -10,17 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
-class Role
+class Role extends AbstractTimestampableEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=45)
      *
@@ -35,14 +26,6 @@ class Role
      * @var User
      */
     private $user;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     /**
      * @return string|null

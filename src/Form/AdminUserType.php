@@ -23,7 +23,7 @@ class AdminUserType extends UserType
      * @param FormBuilderInterface $builder The form builder
      * @param array                $options The options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
         $builder->add('isAdmin', CheckboxType::class, ['mapped' => false, 'required' => false]);
@@ -34,7 +34,7 @@ class AdminUserType extends UserType
      *
      * @param OptionsResolver $resolver The resolver for the options
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,

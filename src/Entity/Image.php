@@ -13,61 +13,58 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * @ORM\Table(name="image",uniqueConstraints={@ORM\UniqueConstraint(name="file_idx",columns={"file"})})
  */
-class Image
+class Image extends AbstractTimestampableEntity
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @var string
      */
     private $file;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
      */
     private $alt;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $updatedAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="image")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var User
      */
     private $user;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Offer", mappedBy="images")
+     *
+     * @var ArrayCollection
      */
     private $offers;
 
+    /**
+     * Image constructor.
+     */
     public function __construct()
     {
         $this->offers = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getFile(): ?string
     {
         return $this->file;
     }
 
+    /**
+     * @param string $file
+     *
+     * @return $this
+     */
     public function setFile(string $file): self
     {
         $this->file = $file;
@@ -75,11 +72,19 @@ class Image
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAlt(): ?string
     {
         return $this->alt;
     }
 
+    /**
+     * @param string|null $alt
+     *
+     * @return $this
+     */
     public function setAlt(?string $alt): self
     {
         $this->alt = $alt;
@@ -87,35 +92,19 @@ class Image
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -131,6 +120,11 @@ class Image
         return $this->offers;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function addOffer(Offer $offer): self
     {
         if (!$this->offers->contains($offer)) {
@@ -141,6 +135,11 @@ class Image
         return $this;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return $this
+     */
     public function removeOffer(Offer $offer): self
     {
         if ($this->offers->contains($offer)) {

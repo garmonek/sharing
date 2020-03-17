@@ -13,35 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ORM\Table(name="city",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name"})})
  */
-class City
+class City extends AbstractTimestampableEntity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTimeInterface
-     */
-    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\District", mappedBy="city", orphanRemoval=true)
@@ -56,14 +35,6 @@ class City
     public function __construct()
     {
         $this->districts = new ArrayCollection();
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     /**
@@ -82,46 +53,6 @@ class City
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTimeInterface $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTimeInterface $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

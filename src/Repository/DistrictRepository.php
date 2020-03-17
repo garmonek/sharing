@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
@@ -14,6 +17,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class DistrictRepository extends ServiceEntityRepository
 {
+    /**
+     * DistrictRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, District::class);
@@ -34,7 +41,7 @@ class DistrictRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+     */
 
     /*
     public function findOneBySomeField($value): ?District
@@ -46,5 +53,5 @@ class DistrictRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+     */
 }

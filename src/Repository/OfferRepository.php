@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Repository;
 
@@ -14,6 +17,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class OfferRepository extends ServiceEntityRepository
 {
+    /**
+     * OfferRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Offer::class);
@@ -34,7 +41,7 @@ class OfferRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
+     */
 
     /*
     public function findOneBySomeField($value): ?Offer
@@ -46,5 +53,5 @@ class OfferRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+     */
 }
