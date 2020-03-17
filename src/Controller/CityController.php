@@ -8,6 +8,8 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use App\Repository\DistrictRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -83,10 +85,20 @@ class CityController extends AbstractController
      *
      * @return Response
      */
-    public function show(City $city): Response
-    {
+    public function show(
+        City $city,
+        Request $request,
+        DistrictRepository $districtRepository,
+        PaginatorInterface $paginator
+    ): Response{
+        $districts = $paginator->paginate(
+            $districtRepository->findAll(),
+            $request->query->getInt('page', 1)
+        );
+
         return $this->render('city/show.html.twig', [
             'city' => $city,
+            'districts' => $districts,
         ]);
     }
 
