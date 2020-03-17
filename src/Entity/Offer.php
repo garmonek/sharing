@@ -46,7 +46,7 @@ class Offer extends AbstractTimestampableEntity
     /**
      * @ORM\Column(type="boolean")
      *
-     * @var boolean
+     * @var bool
      */
     private $active;
 

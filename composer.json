@@ -70,7 +70,7 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
-        "fix": "./vendor/bin/php-cs-fixer fix --rules='{\"align_multiline_comment\":{\"comment_type\":\"all_multiline\"}}' ./src",
+        "fix": "./vendor/bin/php-cs-fixer fix -v --rules='{\"no_superfluous_phpdoc_tags\":false}' ./src; ./vendor/bin/phpcbf -v --standard=Symfony ./src",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

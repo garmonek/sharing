@@ -47,7 +47,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/new", name="user_new", methods={"GET","POST"})
      *
-     * @param Request $request
+     * @param Request                      $request
      * @param UserPasswordEncoderInterface $encoder
      *
      * @return Response
@@ -113,8 +113,8 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}/edit", name="user_edit", methods={"GET","POST"})
      *
-     * @param Request $request
-     * @param User $user
+     * @param Request                      $request
+     * @param User                         $user
      * @param UserPasswordEncoderInterface $encoder
      *
      * @return Response
@@ -177,7 +177,7 @@ class UserController extends AbstractController
      * @Route("/user/{id}", name="user_delete", methods={"DELETE"})
      *
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      *
      * @return Response
      */
