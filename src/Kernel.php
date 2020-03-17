@@ -1,5 +1,10 @@
 <?php
 
+/** @noinspection ALL */
+/** @noinspection ALL */
+
+/** @noinspection PhpUnhandledExceptionInspection */
+
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

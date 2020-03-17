@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'title.edit_user' | trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{'header.edit_user' | trans}}</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    {% if is_granted('ROLE_ADMIN') %}
+      <a href="{{ path('user_index') }}">{{ 'button.back_to_list' | trans }}</a>
+      <a href="{{ path('user_addAdmin', {'id':user.id}) }}">{{'button.add_admin_access' | trans}}</a>
+    {% endif %}
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}

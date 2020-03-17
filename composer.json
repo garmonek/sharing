@@ -5,7 +5,9 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "knplabs/knp-paginator-bundle": "^5.1",
         "sensio/framework-extra-bundle": "^5.1",
+        "stof/doctrine-extensions-bundle": "^1.3",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
@@ -31,7 +33,16 @@
         "symfony/debug-pack": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
-        "symfony/test-pack": "*"
+        "symfony/test-pack": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.1",
+        "escapestudios/symfony2-coding-standard": "^3.8",
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "fzaninotto/faker": "^1.8",
+        "phpmd/phpmd": "^2.6",
+        "squizlabs/php_codesniffer": "^3.4",
+        "symfony/stopwatch": "*",
+        "symfony/twig-bundle": "*",
+        "symfony/web-profiler-bundle": "*"
     },
     "config": {
         "preferred-install": {
@@ -58,6 +69,7 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "fix": "./vendor/bin/php-cs-fixer fix --rules='{\"align_multiline_comment\":{\"comment_type\":\"all_multiline\"}}' ./src",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -74,7 +86,7 @@
     },
     "extra": {
         "symfony": {
-            "allow-contrib": false,
+            "allow-contrib": "true",
             "require": "4.4.*"
         }
     }

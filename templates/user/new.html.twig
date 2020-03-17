@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.register' | trans}}{% endblock %}
+
+{% block body %}
+    <h1>{{'header.register' | trans}}</h1>
+
+    {{ include('user/_form.html.twig') }}
+
+    <a href="{{ path('user_index') }}">{{ 'button.back_to_list' | trans }}</a>
+{% endblock %}

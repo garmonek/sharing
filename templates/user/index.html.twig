@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.user_index' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'header.user_index' | trans }}</h1>
+    <div class="navigation text-center">
+      {{ knp_pagination_render(users) }}
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+              <th>{{ 'id' | trans }}</th>
+                <th>{{ 'username' | trans }}</th>
+                <th>{{ 'email' | trans }}</th>
+                <th>{{ 'created_at' | trans }}</th>
+                <th>{{ 'updated_at' | trans }}</th>
+                <th> {{ 'actions' | trans }} </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('user_show', {'id': user.id}) }}">{{ 'button.show' | trans }}</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'button.edit' | trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">{{ 'no_records_found' | trans }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-center">
+      {{ knp_pagination_render(users) }}
+    </div>
+    <a href="{{ path('user_new') }}">{{'button.create_new' | trans }}</a>
+{% endblock %}

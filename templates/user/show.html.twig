@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'title.user' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'header.user' | trans }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>{{ 'id' | trans }}</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'username' | trans}}</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'email' | trans}}</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'created_at' | trans}}</th>
+                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'updated_at' | trans}}</th>
+                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+      <a href="{{ path('user_index') }}">{{ 'button.back_to_list' | trans }}</a>
+
+      {{ include('user/_delete_form.html.twig') }}
+
+      <a href="{{ path('user_edit', {'id': user.id}) }}">{{ 'button.edit' | trans }}</a>
+
+{% endblock %}
