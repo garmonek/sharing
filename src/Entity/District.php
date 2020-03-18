@@ -5,16 +5,21 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
  * @ORM\Table(name="district",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name"})})
+ * @UniqueEntity(fields="name")
  */
 class District extends AbstractTimestampableEntity
 {
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Type(type="string")
      *
      * @var string
      */

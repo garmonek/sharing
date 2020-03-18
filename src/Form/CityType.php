@@ -7,6 +7,7 @@ namespace App\Form;
 
 use App\Entity\City;
 use App\Entity\District;
+use App\Form\DataTransformer\CityDistrictTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +42,7 @@ class CityType extends AbstractType
                 'allow_clear' => true,
                 'delay' => 250,
                 'cache' => true,
-                'cache_timeout' => 60000, // if 'cache' is true
+                'cache_timeout' => 60000,
                 'language' => 'en',
                 'width' => '100%',
                 'allow_add' => [
@@ -49,6 +50,7 @@ class CityType extends AbstractType
                   'new_tag_text' => '',
                   'tag_separators' => '[","]',
                 ],
+                'transformer' => CityDistrictTransformer::class,
                 'placeholder' => 'form.city.placeholder',
             ]);
     }

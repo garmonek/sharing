@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}District index{% endblock %}
+
+{% block body %}
+    <h1>District index</h1>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(districts) }}
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Id</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for district in districts %}
+            <tr>
+                <td>{{ district.name }}</td>
+                <td>{{ district.id }}</td>
+                <td>{{ district.createdAt ? district.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ district.updatedAt ? district.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {{ include('district/_delete_form.html.twig') }}
+                    <a href="{{ path('district_edit', {'id': district.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <h2>{{ 'no_records_found' | trans }}</h2>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(districts) }}
+    </div>
+
+    <a href="{{ path('district_new') }}">Create new</a>
+{% endblock %}

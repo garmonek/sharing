@@ -8,6 +8,8 @@ namespace App\Repository;
 use App\Entity\District;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method District|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,32 +28,20 @@ class DistrictRepository extends ServiceEntityRepository
         parent::__construct($registry, District::class);
     }
 
-    // /**
-    //  * @return District[] Returns an array of District objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('d.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+     * @param string $value
+     * @return QueryBuilder
      */
+    public function queryNameLike(string $value): QueryBuilder
+    {
+        $builder = $this->createQueryBuilder('d');
+        if (empty($value)) {
+            return $builder;
+        }
 
-    /*
-    public function findOneBySomeField($value): ?District
-    {
-        return $this->createQueryBuilder('d')
-            ->andWhere('d.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $builder
+            ->andWhere('d.name like :val')
+            ->setParameter('val', $value . '%', ParameterType::STRING)
+            ->orderBy('d.name', 'ASC');
     }
-     */
 }

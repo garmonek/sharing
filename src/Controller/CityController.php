@@ -85,20 +85,10 @@ class CityController extends AbstractController
      *
      * @return Response
      */
-    public function show(
-        City $city,
-        Request $request,
-        DistrictRepository $districtRepository,
-        PaginatorInterface $paginator
-    ): Response{
-        $districts = $paginator->paginate(
-            $districtRepository->findAll(),
-            $request->query->getInt('page', 1)
-        );
+    public function show(City $city): Response{
 
         return $this->render('city/show.html.twig', [
             'city' => $city,
-            'districts' => $districts,
         ]);
     }
 

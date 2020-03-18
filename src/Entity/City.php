@@ -5,6 +5,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,11 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ORM\Table(name="city",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name"})})
+ * @UniqueEntity(fields="name")
  */
 class City extends AbstractTimestampableEntity
 {
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Type(type="string")
      *
      * @var string
      */
@@ -94,6 +99,16 @@ class City extends AbstractTimestampableEntity
                 $district->setCity(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function clearDistricts(): self
+    {
+        $this->districts = new ArrayCollection();
 
         return $this;
     }
