@@ -195,11 +195,17 @@ class User extends AbstractTimestampableEntity implements UserInterface
     }
 
     /**
-     * @return Collection|Role[]
+     * @return Role[]
      */
-    public function getRoles(): Collection
+    public function getRoles()
     {
-        return $this->roles;
+        $roles = [];
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
+        $roles[] = static::ROLE_USER;
+
+        return array_unique($roles);
     }
 
     /**

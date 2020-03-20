@@ -8,7 +8,11 @@ namespace App\Controller;
 use App\Entity\Offer;
 use App\Form\OfferType;
 use App\Repository\OfferRepository;
+use App\Service\OfferDistrictAutocomplete;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,6 +34,26 @@ class OfferController extends AbstractController
         return $this->render('offer/index.html.twig', [
             'offers' => $offerRepository->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/json_districts", name="json_offer_districts", methods={"GET"})
+     *
+     * @param Request                   $request
+     * @param OfferDistrictAutocomplete $autocomplete
+     *
+     * @return JsonResponse
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     */
+    public function jsonCityDistricts(Request $request, OfferDistrictAutocomplete $autocomplete): JsonResponse
+    {
+        return new JsonResponse(
+            $autocomplete->getAutocompleteResults($request, OfferType::class)
+        );
     }
 
     /**
