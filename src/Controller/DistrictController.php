@@ -1,4 +1,7 @@
 <?php
+/**
+ * @license MIT
+ */
 
 namespace App\Controller;
 
@@ -18,6 +21,12 @@ class DistrictController extends AbstractController
 {
     /**
      * @Route("/", name="district_index", methods={"GET"})
+     *
+     * @param DistrictRepository $districtRepository
+     * @param PaginatorInterface $paginator
+     * @param Request            $request
+     *
+     * @return Response
      */
     public function index(DistrictRepository $districtRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -33,6 +42,10 @@ class DistrictController extends AbstractController
 
     /**
      * @Route("/new", name="district_new", methods={"GET","POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -56,6 +69,10 @@ class DistrictController extends AbstractController
 
     /**
      * @Route("/{id}", name="district_show", methods={"GET"})
+     *
+     * @param District $district
+     *
+     * @return Response
      */
     public function show(District $district): Response
     {
@@ -66,6 +83,11 @@ class DistrictController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="district_edit", methods={"GET","POST"})
+     *
+     * @param Request  $request
+     * @param District $district
+     *
+     * @return Response
      */
     public function edit(Request $request, District $district): Response
     {
@@ -86,6 +108,11 @@ class DistrictController extends AbstractController
 
     /**
      * @Route("/{id}", name="district_delete", methods={"DELETE"})
+     *
+     * @param Request  $request
+     * @param District $district
+     *
+     * @return Response
      */
     public function delete(Request $request, District $district): Response
     {

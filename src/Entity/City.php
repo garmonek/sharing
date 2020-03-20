@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  * @ORM\Table(name="city",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name"})})
+ *
  * @UniqueEntity(fields="name")
  */
 class City extends AbstractTimestampableEntity
@@ -28,7 +29,7 @@ class City extends AbstractTimestampableEntity
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\District", mappedBy="city", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\District", mappedBy="city", orphanRemoval=true, cascade={"remove", "persist"})
      *
      * @var ArrayCollection
      */

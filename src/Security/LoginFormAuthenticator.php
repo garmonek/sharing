@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection MessDetectorValidationInspection */
+
 /**
  * Login form authenticator.
  */

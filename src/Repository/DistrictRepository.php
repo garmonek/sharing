@@ -30,6 +30,7 @@ class DistrictRepository extends ServiceEntityRepository
 
     /**
      * @param string $value
+     *
      * @return QueryBuilder
      */
     public function queryNameLike(string $value): QueryBuilder
@@ -41,7 +42,7 @@ class DistrictRepository extends ServiceEntityRepository
 
         return $builder
             ->andWhere('d.name like :val')
-            ->setParameter('val', $value . '%', ParameterType::STRING)
+            ->setParameter('val', $value.'%', ParameterType::STRING)
             ->orderBy('d.name', 'ASC');
     }
 }

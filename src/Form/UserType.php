@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection MessDetectorValidationInspection */
 
 namespace App\Form;
 

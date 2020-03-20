@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
  * @ORM\Table(name="district",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name"})})
+ *
  * @UniqueEntity(fields="name")
  */
 class District extends AbstractTimestampableEntity

@@ -15,11 +15,12 @@ class CityDistrictTransformer extends EntitiesToPropertyTransformer
 {
     /**
      * @param array $values
+     *
      * @return array
      */
     public function reverseTransform($values): array
     {
-        return array_map(function(District $district) {
+        return array_map(function (District $district) {
             return $district->setName(strtolower($district->getName()));
         }, parent::reverseTransform($values));
     }
