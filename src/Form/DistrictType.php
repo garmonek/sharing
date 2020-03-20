@@ -2,10 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\City;
 use App\Entity\District;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,13 +22,7 @@ class DistrictType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'form.district.name',
-            ])
-            ->add('city', EntityType::class, [
-                'class' => City::class,
-                'choice_label' => 'name',
-                'label' => 'form.district.city.label',
-            ])
-        ;
+            ]);
     }
 
     /**

@@ -29,14 +29,34 @@ class DistrictRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int|null    $cityId
+     * @param string|null $value
+     *
+     * @return QueryBuilder
+     */
+    public function queryNameLikeForCity(?int $cityId, ?string $value): QueryBuilder
+    {
+        $builder = $this->queryNameLike($value);
+        if (!$cityId || 0 >= $cityId) {
+            return $builder;
+        }
+
+        $builder = $this->queryNameLike($value)
+            ->andWhere('d.city = :cityId')
+            ->setParameter(':cityId', $cityId, ParameterType::INTEGER);
+
+        return $builder;
+    }
+
+    /**
      * @param string $value
      *
      * @return QueryBuilder
      */
-    public function queryNameLike(string $value): QueryBuilder
+    public function queryNameLike(?string $value): QueryBuilder
     {
         $builder = $this->createQueryBuilder('d');
-        if (empty($value)) {
+        if (!$value || empty($value)) {
             return $builder;
         }
 

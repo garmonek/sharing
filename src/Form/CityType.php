@@ -59,7 +59,7 @@ class CityType extends AbstractType
                 'query_parameters' => [
                     self::REQUEST_CITY_ID_KEY => $cityId,
                 ],
-                'callback' => function (QueryBuilder $queryBuilder, Request $data) use ($cityId) {
+                'callback' => function (QueryBuilder $queryBuilder, Request $data) {
                     $cityId = (int) $data->get(self::REQUEST_CITY_ID_KEY);
                     if ($cityId > 0) {
                         $queryBuilder->andWhere('e.city = :d')

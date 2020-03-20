@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection MessDetectorValidationInspection */
+
 /**
  * @license MIT
  */
@@ -13,6 +14,16 @@ use Tetranz\Select2EntityBundle\Form\DataTransformer\EntitiesToPropertyTransform
  */
 class CityDistrictTransformer extends EntitiesToPropertyTransformer
 {
+    /**
+     * @param mixed $entities
+     *
+     * @return array
+     */
+    public function transform($entities): array
+    {
+        return [];
+    }
+
     /**
      * @param array $values
      *

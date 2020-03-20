@@ -6,8 +6,11 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\District;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use App\Service\DistrictListingService;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +23,20 @@ use Tetranz\Select2EntityBundle\Service\AutocompleteService;
  */
 class CityController extends AbstractController
 {
+    /**
+     * @var DistrictListingService
+     */
+    private $districtListing;
+
+    /**
+     * CityController constructor.
+     * @param DistrictListingService $districtListing
+     */
+    public function __construct(DistrictListingService $districtListing)
+    {
+        $this->districtListing = $districtListing;
+    }
+
     /**
      * @Route("/", name="city_index", methods={"GET"})
      *
@@ -79,14 +96,17 @@ class CityController extends AbstractController
     /**
      * @Route("/{id}", name="city_show", methods={"GET"})
      *
-     * @param City $city
+     * @param City    $city
+     *
+     * @param Request $request
      *
      * @return Response
      */
-    public function show(City $city): Response
+    public function show(City $city, Request $request): Response
     {
         return $this->render('city/show.html.twig', [
             'city' => $city,
+            'districts' => $this->createDistrictPagination($city, $request),
         ]);
     }
 
@@ -100,10 +120,15 @@ class CityController extends AbstractController
      */
     public function edit(Request $request, City $city): Response
     {
+        $districts = $city->getDistricts()->getValues();
         $form = $this->createForm(CityType::class, $city);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($districts as $district) {
+                $city->addDistrict($district);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('city_index');
@@ -112,6 +137,7 @@ class CityController extends AbstractController
         return $this->render('city/edit.html.twig', [
             'city' => $city,
             'form' => $form->createView(),
+            'districts' => $this->createDistrictPagination($city, $request),
         ]);
     }
 
@@ -132,5 +158,39 @@ class CityController extends AbstractController
         }
 
         return $this->redirectToRoute('city_index');
+    }
+
+    /**
+     * @Route("/district/{id}", name="district_delete", methods={"DELETE"})
+     *
+     * @param Request  $request
+     * @param District $district
+     *
+     * @return Response
+     */
+    public function districtDelete(Request $request, District $district): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$district->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($district);
+            $entityManager->flush();
+        }
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @param City    $city
+     * @param Request $request
+     *
+     * @return PaginationInterface
+     */
+    private function createDistrictPagination(City $city, Request $request): PaginationInterface
+    {
+        return $this->districtListing->getDistrictListing(
+            $city->getId(),
+            $request->get('page'),
+            $request->get('search')
+        );
     }
 }
