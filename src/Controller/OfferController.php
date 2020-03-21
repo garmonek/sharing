@@ -6,7 +6,8 @@
 namespace App\Controller;
 
 use App\Entity\Offer;
-use App\Form\OfferType;
+use App\Form\Offer\OfferType;
+use App\Form\Offer\OfferEditType;
 use App\Repository\OfferRepository;
 use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
@@ -107,7 +108,7 @@ class OfferController extends AbstractController
      */
     public function edit(Request $request, Offer $offer): Response
     {
-        $form = $this->createForm(OfferType::class, $offer);
+        $form = $this->createForm(OfferEditType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
