@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Tetranz\Select2EntityBundle\Service\AutocompleteService;
 
 /**
  * @Route("/offer")
@@ -38,7 +39,7 @@ class OfferController extends AbstractController
     }
 
     /**
-     * @Route("/json_districts", name="json_offer_districts", methods={"GET"})
+     * @Route("/district/autocomplete", name="offer_district_autocomplete", methods={"GET"})
      *
      * @param Request                   $request
      * @param OfferDistrictAutocomplete $autocomplete
@@ -50,7 +51,25 @@ class OfferController extends AbstractController
      *
      * @noinspection PhpUnhandledExceptionInspection
      */
-    public function jsonCityDistricts(Request $request, OfferDistrictAutocomplete $autocomplete): JsonResponse
+    public function districtAutocomplete(Request $request, OfferDistrictAutocomplete $autocomplete): JsonResponse
+    {
+        return new JsonResponse(
+            $autocomplete->getAutocompleteResults($request, OfferType::class)
+        );
+    }
+
+    /**
+     * @Route("/tag/autocomplete", name="offer_tag_autocomplete", methods={"GET"})
+     *
+     * @param Request             $request
+     * @param AutocompleteService $autocomplete
+     *
+     * @return JsonResponse
+     *
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     */
+    public function tagAutocomplete(Request $request, AutocompleteService $autocomplete): JsonResponse
     {
         return new JsonResponse(
             $autocomplete->getAutocompleteResults($request, OfferType::class)

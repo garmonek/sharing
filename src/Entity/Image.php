@@ -8,10 +8,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * @ORM\Table(name="image",uniqueConstraints={@ORM\UniqueConstraint(name="file_idx",columns={"file"})})
+ * @ORM\EntityListeners({"App\EventListener\ImageListener"})
  */
 class Image extends AbstractTimestampableEntity
 {
@@ -33,7 +36,7 @@ class Image extends AbstractTimestampableEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="image")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @var User
+     * @var UserInterface
      */
     private $user;
 
@@ -43,6 +46,21 @@ class Image extends AbstractTimestampableEntity
      * @var ArrayCollection
      */
     private $offers;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $mimeType;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var UploadedFile|null
+     */
+    private ?UploadedFile $uploadedFile;
 
     /**
      * Image constructor.
@@ -95,17 +113,17 @@ class Image extends AbstractTimestampableEntity
     /**
      * @return User|null
      */
-    public function getUser(): ?User
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }
 
     /**
-     * @param User|null $user
+     * @param UserInterface|null $user
      *
      * @return $this
      */
-    public function setUser(?User $user): self
+    public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
 
@@ -146,6 +164,66 @@ class Image extends AbstractTimestampableEntity
             $this->offers->removeElement($offer);
             $offer->removeImage($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMimeType(): ?string
+    {
+        return $this->mimeType;
+    }
+
+    /**
+     * @param string|null $mimeType
+     *
+     * @return $this
+     */
+    public function setMimeType(?string $mimeType): self
+    {
+        $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return UploadedFile|null
+     */
+    public function getUploadedFile(): ?UploadedFile
+    {
+        return $this->uploadedFile;
+    }
+
+    /**
+     * @param UploadedFile|null $uploadedFile
+     *
+     * @return $this
+     */
+    public function setUploadedFile(?UploadedFile $uploadedFile): self
+    {
+        $this->uploadedFile = $uploadedFile;
 
         return $this;
     }

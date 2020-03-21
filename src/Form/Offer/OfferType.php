@@ -32,15 +32,22 @@ class OfferType extends AbstractType
     /**
      * @var OfferUserTransformer
      */
-    private $userTransformer;
+    private OfferUserTransformer $userTransformer;
+
+    /**
+     * @var OfferImageTransformer
+     */
+    private OfferImageTransformer $imageTransformer;
 
     /**
      * OfferType constructor.
-     * @param OfferUserTransformer $userTransformer
+     * @param OfferUserTransformer  $userTransformer
+     * @param OfferImageTransformer $imageTransformer
      */
-    public function __construct(OfferUserTransformer $userTransformer)
+    public function __construct(OfferUserTransformer $userTransformer, OfferImageTransformer $imageTransformer)
     {
         $this->userTransformer = $userTransformer;
+        $this->imageTransformer = $imageTransformer;
     }
 
     /**
@@ -55,7 +62,7 @@ class OfferType extends AbstractType
             ->add('district', Select2EntityType::class, [
                 'label' => 'form.city.districts.label',
                 'multiple' => false,
-                'remote_route' => 'json_offer_districts',
+                'remote_route' => 'offer_district_autocomplete',
                 'class' => District::class,
                 'property' => 'name',
                 'primary_key' => 'id',
@@ -74,7 +81,7 @@ class OfferType extends AbstractType
             ->add('tags', Select2EntityType::class, [
                 'label' => 'form.offer.tags.label',
                 'multiple' => true,
-                'remote_route' => 'json_city_districts',
+                'remote_route' => 'offer_tag_autocomplete',
                 'class' => Tag::class,
                 'property' => 'name',
                 'primary_key' => 'id',
@@ -97,7 +104,7 @@ class OfferType extends AbstractType
             ->add('exchangeTags', Select2EntityType::class, [
                 'label' => 'form.offer.tags.label',
                 'multiple' => true,
-                'remote_route' => 'json_city_districts',
+                'remote_route' => 'offer_tag_autocomplete',
                 'class' => Tag::class,
                 'property' => 'name',
                 'primary_key' => 'id',
@@ -118,17 +125,20 @@ class OfferType extends AbstractType
                 'placeholder' => 'form.offer.tags.placeholder',
             ])->add('images', FileType::class, [
                 'multiple' => true,
+                'required' => false,
                 'attr' => [
-                    'class' => 'js-jpreview',
-                    'data-jpreview-container'=> '#demo-1-container',
                     'accept' => 'image/*',
                     'multiple' => 'multiple',
-                ]
+                ],
             ])
             ->add('user', HiddenType::class);
 
         $builder->get('user')->addModelTransformer(
             $this->userTransformer
+        );
+
+        $builder->get('images')->addModelTransformer(
+            $this->imageTransformer
         );
 
         $this->addActiveField($builder);

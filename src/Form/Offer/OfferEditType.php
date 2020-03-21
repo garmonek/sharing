@@ -8,6 +8,10 @@ namespace App\Form\Offer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * Class OfferEditType
+ * @package App\Form\Offer
+ */
 class OfferEditType extends OfferType
 {
     /**

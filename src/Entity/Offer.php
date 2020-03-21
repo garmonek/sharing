@@ -8,6 +8,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OfferRepository")
@@ -22,7 +23,7 @@ class Offer extends AbstractTimestampableEntity
     private $webImages;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"})
      *
      * @var ArrayCollection
      */
@@ -39,7 +40,7 @@ class Offer extends AbstractTimestampableEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @var User
+     * @var UserInterface
      */
     private $user;
 
@@ -70,7 +71,7 @@ class Offer extends AbstractTimestampableEntity
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\District", inversedBy="offers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\District")
      * @ORM\JoinColumn(nullable=false)
      *
      * @var District
@@ -198,20 +199,19 @@ class Offer extends AbstractTimestampableEntity
     }
 
     /**
-     *
      * @return User|null
      */
-    public function getUser(): ?User
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
     /**
-     * @param User|null $user
+     * @param UserInterface $user
      *
      * @return $this
      */
-    public function setUser(?User $user): self
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
