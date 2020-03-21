@@ -5,14 +5,14 @@
  * @license MIT
  */
 
-namespace App\Form;
+namespace App\Form\Offer;
 
 use App\Entity\District;
 use App\Entity\Offer;
 use App\Entity\Tag;
-use App\Form\DataTransformer\OfferUserTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +24,9 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
  */
 class OfferType extends AbstractType
 {
+    /**
+     * @var string
+     */
     public const CITY_DISTRICT_DELIMITER = '::';
 
     /**
@@ -113,7 +116,16 @@ class OfferType extends AbstractType
                     'tag_separators' => '[","]',
                 ],
                 'placeholder' => 'form.offer.tags.placeholder',
-            ])->add('user', HiddenType::class);
+            ])->add('images', FileType::class, [
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'js-jpreview',
+                    'data-jpreview-container'=> '#demo-1-container',
+                    'accept' => 'image/*',
+                    'multiple' => 'multiple',
+                ]
+            ])
+            ->add('user', HiddenType::class);
 
         $builder->get('user')->addModelTransformer(
             $this->userTransformer

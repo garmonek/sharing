@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-namespace App\Form\DataTransformer;
+namespace App\Form\Offer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Security\Core\Security;
