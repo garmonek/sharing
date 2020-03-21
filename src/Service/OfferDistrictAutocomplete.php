@@ -7,7 +7,7 @@
 namespace App\Service;
 
 use App\Entity\District;
-use App\Form\OfferType;
+use App\Form\Offer\OfferType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
