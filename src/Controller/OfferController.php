@@ -9,7 +9,10 @@ use App\Entity\Image;
 use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
+use App\Form\CriteriaType;
 use App\Repository\OfferRepository;
+use App\Search\Criteria;
+use App\Search\SearchService;
 use App\Service\ImagesListingService;
 use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
@@ -41,7 +44,6 @@ class OfferController extends AbstractController
         $this->imagesListing = $imagesListing;
     }
 
-
     /**
      * @Route("/", name="offer_index", methods={"GET"})
      *
@@ -49,10 +51,17 @@ class OfferController extends AbstractController
      *
      * @return Response
      */
-    public function index(OfferRepository $offerRepository): Response
+    public function index(Request $request, SearchService $searchService): Response
     {
+        $criteria = new Criteria();
+        $searchForm = $this->createForm(CriteriaType::class, $criteria);
+        $searchForm->handleRequest($request);
+
+        $offers = $searchService->search($criteria, $request);
+
         return $this->render('offer/index.html.twig', [
-            'offers' => $offerRepository->findAll(),
+            'offers' => $offers,
+            'search_form' => $searchForm->createView()
         ]);
     }
 
@@ -110,6 +119,7 @@ class OfferController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($offer);
+            $entityManager->persist($offer->getImages());
             $entityManager->flush();
 
             return $this->redirectToRoute('offer_index');
@@ -148,11 +158,17 @@ class OfferController extends AbstractController
      */
     public function edit(Request $request, Offer $offer): Response
     {
+        $images = $offer->getImages()->map(function (Image $image){return $image;});
         $form = $this->createForm(OfferEditType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            foreach ($images as $image) {
+                $offer->addImage($image);
+            }
+            $em->persist($offer);
+            $em->flush();
 
             return $this->redirect($request->headers->get('referer'));
         }
@@ -195,14 +211,12 @@ class OfferController extends AbstractController
      */
     public function imageDelete(Request $request, Offer $offer, int $imageId): Response
     {
-        $form = $this->createForm(OfferEditType::class, $offer);
-        $form->handleRequest($request);
         $image = $offer->getImages()->filter(function (Image $image) use ($imageId) {
             return $imageId === $image->getId();
         })->first();
 
-        if (!$image
-            || $this->isCsrfTokenValid(
+        if ($image
+            && $this->isCsrfTokenValid(
                 'delete'.$offer->getId().$imageId,
                 $request->request->get('_token')
             )
@@ -224,6 +238,6 @@ class OfferController extends AbstractController
      */
     private function makeImagesPagination(Offer $offer, Request $request): PaginationInterface
     {
-        return $this->imagesListing->createOfferImagesPagination($offer->getId(), $request->get('page', 1));
+        return $this->imagesListing->getOfferImagesListing($offer->getId(), $request->get('page', 1));
     }
 }

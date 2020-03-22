@@ -23,7 +23,7 @@ class Offer extends AbstractTimestampableEntity
     private $webImages;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"}, fetch="EAGER")
      *
      * @var ArrayCollection
      */
