@@ -11,8 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DistrictRepository")
  * @ORM\Table(name="district",uniqueConstraints={@ORM\UniqueConstraint(name="name_idx",columns={"name", "city_id"})})
- *
- *
  */
 class District extends AbstractTimestampableEntity
 {

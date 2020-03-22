@@ -40,7 +40,7 @@ class Offer extends AbstractTimestampableEntity
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="offers")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @var UserInterface
+     * @var ?UserInterface
      */
     private $user;
 
@@ -201,7 +201,7 @@ class Offer extends AbstractTimestampableEntity
     /**
      * @return User|null
      */
-    public function getUser(): UserInterface
+    public function getUser(): ?UserInterface
     {
         return $this->user;
     }

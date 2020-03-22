@@ -10,11 +10,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * @ORM\Table(name="image",uniqueConstraints={@ORM\UniqueConstraint(name="file_idx",columns={"file"})})
  * @ORM\EntityListeners({"App\EventListener\ImageListener"})
+ *
+ * @UniqueEntity(fields="name")
  */
 class Image extends AbstractTimestampableEntity
 {

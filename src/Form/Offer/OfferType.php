@@ -102,7 +102,7 @@ class OfferType extends AbstractType
                 'placeholder' => 'form.offer.tags.placeholder',
             ])
             ->add('exchangeTags', Select2EntityType::class, [
-                'label' => 'form.offer.tags.label',
+                'label' => 'form.offer.exchange.tags.label',
                 'multiple' => true,
                 'remote_route' => 'offer_tag_autocomplete',
                 'class' => Tag::class,

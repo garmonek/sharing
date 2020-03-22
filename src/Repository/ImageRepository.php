@@ -8,6 +8,8 @@ namespace App\Repository;
 use App\Entity\Image;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Image|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,32 +28,18 @@ class ImageRepository extends ServiceEntityRepository
         parent::__construct($registry, Image::class);
     }
 
-    // /**
-    //  * @return Image[] Returns an array of Image objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+     * @param int $offerId
+     *
+     * @return QueryBuilder
      */
+    public function queryOfferImages(int $offerId): QueryBuilder
+    {
+        $builder = $this->createQueryBuilder('i');
 
-    /*
-    public function findOneBySomeField($value): ?Image
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $builder->innerJoin('i.offers', 'o', 'WITH', 'o.id = :offerId')
+            ->setParameter('offerId', $offerId, ParameterType::INTEGER);
+
+        return $builder;
     }
-     */
 }

@@ -5,13 +5,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
 use App\Repository\OfferRepository;
+use App\Service\ImagesListingService;
 use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +27,21 @@ use Tetranz\Select2EntityBundle\Service\AutocompleteService;
  */
 class OfferController extends AbstractController
 {
+    /**
+     * @var ImagesListingService
+     */
+    private $imagesListing;
+
+    /**
+     * OfferController constructor.
+     * @param ImagesListingService $imagesListing
+     */
+    public function __construct(ImagesListingService $imagesListing)
+    {
+        $this->imagesListing = $imagesListing;
+    }
+
+
     /**
      * @Route("/", name="offer_index", methods={"GET"})
      *
@@ -106,14 +124,17 @@ class OfferController extends AbstractController
     /**
      * @Route("/{id}", name="offer_show", methods={"GET"})
      *
-     * @param Offer $offer
+     * @param Offer   $offer
+     *
+     * @param Request $request
      *
      * @return Response
      */
-    public function show(Offer $offer): Response
+    public function show(Offer $offer, Request $request): Response
     {
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
+            'images' => $this->makeImagesPagination($offer, $request),
         ]);
     }
 
@@ -133,12 +154,13 @@ class OfferController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('offer_index');
+            return $this->redirect($request->headers->get('referer'));
         }
 
         return $this->render('offer/edit.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
+            'images' => $this->makeImagesPagination($offer, $request),
         ]);
     }
 
@@ -159,5 +181,49 @@ class OfferController extends AbstractController
         }
 
         return $this->redirectToRoute('offer_index');
+    }
+
+    /**
+     * @Route("/{id}/image/{imageId}", name="offer_image_delete", methods={"DELETE"})
+     *
+     * @param Request $request
+     * @param Offer   $offer
+     *
+     * @param int     $imageId
+     *
+     * @return Response
+     */
+    public function imageDelete(Request $request, Offer $offer, int $imageId): Response
+    {
+        $form = $this->createForm(OfferEditType::class, $offer);
+        $form->handleRequest($request);
+        $image = $offer->getImages()->filter(function (Image $image) use ($imageId) {
+            return $imageId === $image->getId();
+        })->first();
+
+        if (!$image
+            || $this->isCsrfTokenValid(
+                'delete'.$offer->getId().$imageId,
+                $request->request->get('_token')
+            )
+        ) {
+            $offer->removeImage($image);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($offer);
+            $manager->flush();
+        }
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @param Offer   $offer
+     * @param Request $request
+     *
+     * @return PaginationInterface
+     */
+    private function makeImagesPagination(Offer $offer, Request $request): PaginationInterface
+    {
+        return $this->imagesListing->createOfferImagesPagination($offer->getId(), $request->get('page', 1));
     }
 }
