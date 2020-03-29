@@ -146,7 +146,6 @@ class OfferController extends AbstractController
     {
         $criteria = new OfferCriteria();
 
-        //todo leave only sorting in offerCriteriaType here
         $searchForm = $this->createForm(OfferCriteriaType::class, $criteria, [
             OfferCriteriaType::ENABLE_TAGS => false,
             OfferCriteriaType::ENABLE_EXCHANGE_TAGS => false,
