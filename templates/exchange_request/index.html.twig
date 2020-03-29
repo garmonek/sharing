@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ExchangeRequest index{% endblock %}
+
+{% block body %}
+    <h1>ExchangeRequest index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>Id</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exchange_request in exchange_requests %}
+            <tr>
+                <td>{{ exchange_request.message }}</td>
+                <td>{{ exchange_request.id }}</td>
+                <td>{{ exchange_request.createdAt ? exchange_request.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ exchange_request.updatedAt ? exchange_request.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('exchange_request_show', {'id': exchange_request.id}) }}">show</a>
+                    <a href="{{ path('exchange_request_edit', {'id': exchange_request.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('exchange_request_new') }}">Create new</a>
+{% endblock %}

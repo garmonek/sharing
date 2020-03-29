@@ -103,6 +103,11 @@ class User extends AbstractTimestampableEntity implements UserInterface
     private $offers;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ExchangeRequest", mappedBy="user", orphanRemoval=true)
+     */
+    private $exchangeRequests;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -111,6 +116,7 @@ class User extends AbstractTimestampableEntity implements UserInterface
         $this->webImages = new ArrayCollection();
         $this->image = new ArrayCollection();
         $this->offers = new ArrayCollection();
+        $this->exchangeRequests = new ArrayCollection();
     }
 
     /**
@@ -358,6 +364,37 @@ class User extends AbstractTimestampableEntity implements UserInterface
             // set the owning side to null (unless already changed)
             if ($offer->getUser() === $this) {
                 $offer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExchangeRequest[]
+     */
+    public function getExchangeRequests(): Collection
+    {
+        return $this->exchangeRequests;
+    }
+
+    public function addExchangeRequest(ExchangeRequest $exchangeRequest): self
+    {
+        if (!$this->exchangeRequests->contains($exchangeRequest)) {
+            $this->exchangeRequests[] = $exchangeRequest;
+            $exchangeRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExchangeRequest(ExchangeRequest $exchangeRequest): self
+    {
+        if ($this->exchangeRequests->contains($exchangeRequest)) {
+            $this->exchangeRequests->removeElement($exchangeRequest);
+            // set the owning side to null (unless already changed)
+            if ($exchangeRequest->getUser() === $this) {
+                $exchangeRequest->setUser(null);
             }
         }
 
