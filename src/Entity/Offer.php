@@ -37,7 +37,7 @@ class Offer extends AbstractTimestampableEntity
     private $images;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"}, fetch="EAGER")
      *
      * @var ArrayCollection
      */
@@ -59,7 +59,7 @@ class Offer extends AbstractTimestampableEntity
     private $active;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"}, fetch="EAGER")
      * @ORM\JoinTable(
      *     name="offer_exchange_tags",
      *     joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},

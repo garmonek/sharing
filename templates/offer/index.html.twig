@@ -7,37 +7,7 @@
 
     {{ include('offer/_search_form.html.twig') }}
     
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Active</th>
-                <th>Description</th>
-                <th>Id</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for offer in offers %}
-            <tr>
-                <td>{{ offer.active ? 'Yes' : 'No' }}</td>
-                <td>{{ offer.description }}</td>
-                <td>{{ offer.id }}</td>
-                <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ offer.updatedAt ? offer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('offer_show', {'id': offer.id}) }}">show</a>
-                    <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ include('offer/_listing.html.twig') }}
 
     <a href="{{ path('offer_new') }}">Create new</a>
 {% endblock %}

@@ -142,11 +142,27 @@ class OfferController extends AbstractController
      *
      * @return Response
      */
-    public function show(Offer $offer, Request $request): Response
+    public function show(Offer $offer, Request $request, SearchService $searchService): Response
     {
+        $criteria = new OfferCriteria();
+
+        //todo leave only sorting in offerCriteriaType here
+        $searchForm = $this->createForm(OfferCriteriaType::class, $criteria, [
+            OfferCriteriaType::ENABLE_TAGS => false,
+            OfferCriteriaType::ENABLE_EXCHANGE_TAGS => false,
+            OfferCriteriaType::ENABLE_ACTIVE => false
+        ]);
+        $searchForm->handleRequest($request);
+
+        $criteria->tags = $offer->getExchangeTags()->toArray();
+        $criteria->active = OfferCriteria::OFFER_ACTIVE;
+        $exchangeOffers = $searchService->search($criteria, $request);
+
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
             'images' => $this->makeImagesPagination($offer, $request),
+            'search_form' => $searchForm->createView(),
+            'offers' => $exchangeOffers,
         ]);
     }
 

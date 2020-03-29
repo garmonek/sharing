@@ -17,9 +17,9 @@ class OfferCriteria extends AbstractCriteria
     public const SORT_DIRECTION_ASC = 1;
     public const SORT_DIRECTION_DESC = 2;
 
-    public const OFFER_ACTIVE = 0;
-    public const OFFER_INACTIVE = 1;
-    public const OFFER_ALL = 2;
+    public const OFFER_ACTIVE = 1;
+    public const OFFER_INACTIVE = 2;
+    public const OFFER_ALL = 3;
 
     public const SORT_VALUE_CREATED = 1;
     public const SORT_VALUE_UPDATED = 2;
