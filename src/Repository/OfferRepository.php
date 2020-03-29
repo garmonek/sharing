@@ -6,10 +6,8 @@
 namespace App\Repository;
 
 use App\Entity\Offer;
-use App\Search\OfferCriteria;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Offer|null find($id, $lockMode = null, $lockVersion = null)

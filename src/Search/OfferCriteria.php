@@ -5,6 +5,7 @@
 
 namespace App\Search;
 
+use App\Entity\AbstractTimestampableEntity;
 use App\Entity\District;
 use App\Entity\Tag;
 
@@ -60,42 +61,62 @@ class OfferCriteria extends AbstractCriteria
      */
     public $limit = 10;
 
+    /**
+     * @return bool
+     */
     public function hasTags(): bool
     {
         return 0 !== count($this->tags);
     }
 
+    /**
+     * @return bool
+     */
     public function hasExchangeTags(): bool
     {
         return 0 !== count($this->exchangeTags);
     }
 
+    /**
+     * @return bool
+     */
     public function hasDistricts(): bool
     {
         return 0 !== count($this->districts);
     }
 
+    /**
+     * @return array
+     */
     public function getTagIds(): array
     {
         return $this->getIds($this->tags);
     }
 
+    /**
+     * @return array
+     */
     public function getExchangeTagIds(): array
     {
         return $this->getIds($this->exchangeTags);
     }
 
+    /**
+     * @return array
+     */
     public function getDistrictIds(): array
     {
         return $this->getIds($this->districts);
     }
 
     /**
+     * @param array $instances
+     *
      * @return array
      */
     private function getIds(array $instances): array
     {
-        return array_map(function ($instance) {
+        return array_map(function (AbstractTimestampableEntity $instance) {
             return $instance->getId();
         }, $instances);
     }

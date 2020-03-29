@@ -5,13 +5,11 @@
 
 namespace App\Search;
 
-use App\Repository\OfferRepository;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Class SearchService
  */
@@ -27,14 +25,29 @@ class SearchService
      */
     private $builderFactory;
 
+    /**
+     * SearchService constructor.
+     * @param PaginatorInterface  $paginator
+     * @param QueryBuilderFactory $builderFactory
+     */
     public function __construct(PaginatorInterface $paginator, QueryBuilderFactory $builderFactory)
     {
         $this->paginator = $paginator;
         $this->builderFactory = $builderFactory;
     }
 
+    /**
+     * @param AbstractCriteria $criteria
+     * @param Request          $request
+     *
+     * @return PaginationInterface
+     *
+     * @throws Exception
+     */
     public function search(AbstractCriteria $criteria, Request $request)
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
+
         return $this->paginator->paginate(
             $this->builderFactory->create($criteria),
             $request->get('page', 1),

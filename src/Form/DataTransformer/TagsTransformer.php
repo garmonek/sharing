@@ -17,6 +17,7 @@ class TagsTransformer extends EntitiesToPropertyTransformer
      * Transform array to a collection of entities
      *
      * @param array $values
+     *
      * @return array
      */
     public function reverseTransform($values)
@@ -25,10 +26,11 @@ class TagsTransformer extends EntitiesToPropertyTransformer
             return array();
         }
 
-        $cleanValues = array_map(function(string $value){
-            return str_replace($this->newTagPrefix,'', $value);
+        $cleanValues = array_map(function (string $value) {
+            return str_replace($this->newTagPrefix, '', $value);
         }, $values);
 
+        /** @noinspection PhpUndefinedMethodInspection */
         $entities = $this->em->createQueryBuilder()
             ->select('entity')
             ->from($this->className, 'entity')
@@ -37,13 +39,14 @@ class TagsTransformer extends EntitiesToPropertyTransformer
             ->getQuery()
             ->getResult();
 
-        $entitiesNames = array_map(function(Tag $tag){
+        $entitiesNames = array_map(function (Tag $tag) {
             return $tag->getName();
         }, $entities);
 
-        $newTags = array_map(function(string $name) {
+        $newTags = array_map(function (string $name) {
             $object = new $this->className;
             $this->accessor->setValue($object, $this->textProperty, $name);
+
             return $object;
         }, array_diff($cleanValues, $entitiesNames));
 

@@ -10,13 +10,13 @@ use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
 use App\Search\OfferCriteriaType;
-use App\Repository\OfferRepository;
 use App\Search\OfferCriteria;
 use App\Search\SearchService;
 use App\Service\ImagesListingService;
 use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -47,9 +47,12 @@ class OfferController extends AbstractController
     /**
      * @Route("/", name="offer_index", methods={"GET"})
      *
-     * @param OfferRepository $offerRepository
+     * @param Request       $request
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
      */
     public function index(Request $request, SearchService $searchService): Response
     {
@@ -61,7 +64,7 @@ class OfferController extends AbstractController
 
         return $this->render('offer/index.html.twig', [
             'offers' => $offers,
-            'search_form' => $searchForm->createView()
+            'search_form' => $searchForm->createView(),
         ]);
     }
 
@@ -157,7 +160,9 @@ class OfferController extends AbstractController
      */
     public function edit(Request $request, Offer $offer): Response
     {
-        $images = $offer->getImages()->map(function (Image $image){return $image;});
+        $images = $offer->getImages()->map(function (Image $image) {
+            return $image;
+        });
         $form = $this->createForm(OfferEditType::class, $offer);
         $form->handleRequest($request);
 

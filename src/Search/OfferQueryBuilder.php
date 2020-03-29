@@ -10,6 +10,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class OfferQueryBuilder
+ * @package App\Search
+ */
 class OfferQueryBuilder implements QueryBuilderInterface
 {
     /**
@@ -22,6 +26,11 @@ class OfferQueryBuilder implements QueryBuilderInterface
      */
     private $criteria;
 
+    /**
+     * OfferQueryBuilder constructor.
+     * @param QueryBuilder  $builder
+     * @param OfferCriteria $criteria
+     */
     public function __construct(QueryBuilder $builder, OfferCriteria $criteria)
     {
         $this->criteria = $criteria;
@@ -33,6 +42,9 @@ class OfferQueryBuilder implements QueryBuilderInterface
             ->join('o.exchangeTags', 'et');
     }
 
+    /**
+     * @return QueryBuilder
+     */
     public function buildQuery(): QueryBuilder
     {
         if ($this->criteria->hasTags()) {
@@ -52,6 +64,9 @@ class OfferQueryBuilder implements QueryBuilderInterface
         return $this->builder;
     }
 
+    /**
+     * @return QueryBuilder
+     */
     private function searchWithDistrict(): QueryBuilder
     {
         return $this->builder->join('o.district', 'd')
