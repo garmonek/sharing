@@ -12,10 +12,10 @@
 
     <form method="post" action="{{ url('security_login') }}">
         {% if error %}
-            {%  include 'default/_single_flash_message.html.twig' with {
-                type: 'danger',
-                message: error.messageKey|trans(error.messageData, 'security')
-            } %}
+{#            {%  include 'default/_single_flash_message.html.twig' with {#}
+{#                type: 'danger',#}
+{#                message: error.messageKey|trans(error.messageData, 'security')#}
+{#            } %}#}
         {% endif %}
 
         <div class="form-group row">

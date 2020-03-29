@@ -21,6 +21,8 @@ class OfferEditType extends OfferType
      */
     protected function addActiveField(FormBuilderInterface $builder)
     {
-        $builder->add('active', CheckboxType::class);
+        $builder->add('active', CheckboxType::class, [
+            'required' => false
+        ]);
     }
 }

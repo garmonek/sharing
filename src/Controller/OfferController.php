@@ -9,9 +9,9 @@ use App\Entity\Image;
 use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
-use App\Form\CriteriaType;
+use App\Search\OfferCriteriaType;
 use App\Repository\OfferRepository;
-use App\Search\Criteria;
+use App\Search\OfferCriteria;
 use App\Search\SearchService;
 use App\Service\ImagesListingService;
 use App\Service\OfferDistrictAutocomplete;
@@ -53,8 +53,8 @@ class OfferController extends AbstractController
      */
     public function index(Request $request, SearchService $searchService): Response
     {
-        $criteria = new Criteria();
-        $searchForm = $this->createForm(CriteriaType::class, $criteria);
+        $criteria = new OfferCriteria();
+        $searchForm = $this->createForm(OfferCriteriaType::class, $criteria);
         $searchForm->handleRequest($request);
 
         $offers = $searchService->search($criteria, $request);
@@ -119,7 +119,6 @@ class OfferController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($offer);
-            $entityManager->persist($offer->getImages());
             $entityManager->flush();
 
             return $this->redirectToRoute('offer_index');

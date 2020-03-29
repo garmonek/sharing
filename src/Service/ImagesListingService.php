@@ -43,7 +43,7 @@ class ImagesListingService
      *
      * @return PaginationInterface
      */
-    public function createOfferImagesPagination(string $offerId, ?int $page = 1): PaginationInterface
+    public function getOfferImagesListing(string $offerId, ?int $page = 1): PaginationInterface
     {
         return $this->paginator->paginate(
             $this->imageRepository->queryOfferImages($offerId),

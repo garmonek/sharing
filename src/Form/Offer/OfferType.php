@@ -10,6 +10,7 @@ namespace App\Form\Offer;
 use App\Entity\District;
 use App\Entity\Offer;
 use App\Entity\Tag;
+use App\Form\DataTransformer\TagsTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -32,12 +33,12 @@ class OfferType extends AbstractType
     /**
      * @var OfferUserTransformer
      */
-    private OfferUserTransformer $userTransformer;
+    private $userTransformer;
 
     /**
      * @var OfferImageTransformer
      */
-    private OfferImageTransformer $imageTransformer;
+    private $imageTransformer;
 
     /**
      * OfferType constructor.
@@ -84,7 +85,7 @@ class OfferType extends AbstractType
                 'remote_route' => 'offer_tag_autocomplete',
                 'class' => Tag::class,
                 'property' => 'name',
-                'primary_key' => 'id',
+                'primary_key' => 'name',
                 'text_property' => 'name',
                 'minimum_input_length' => 2,
                 'page_limit' => 10,
@@ -94,6 +95,7 @@ class OfferType extends AbstractType
                 'cache_timeout' => 60000,
                 'language' => 'en',
                 'width' => '100%',
+                'transformer' => TagsTransformer::class,
                 'allow_add' => [
                     'enabled' => true,
                     'new_tag_text' => '',
@@ -107,7 +109,7 @@ class OfferType extends AbstractType
                 'remote_route' => 'offer_tag_autocomplete',
                 'class' => Tag::class,
                 'property' => 'name',
-                'primary_key' => 'id',
+                'primary_key' => 'name',
                 'text_property' => 'name',
                 'minimum_input_length' => 2,
                 'page_limit' => 10,
@@ -122,6 +124,7 @@ class OfferType extends AbstractType
                     'new_tag_text' => '',
                     'tag_separators' => '[","]',
                 ],
+                'transformer' => TagsTransformer::class,
                 'placeholder' => 'form.offer.tags.placeholder',
             ])->add('images', FileType::class, [
                 'multiple' => true,
