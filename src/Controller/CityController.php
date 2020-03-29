@@ -9,7 +9,9 @@ use App\Entity\City;
 use App\Entity\District;
 use App\Form\CityType;
 use App\Repository\CityRepository;
-use App\Service\DistrictListingService;
+use App\Search\DistrictCriteria;
+use App\Search\SearchService;
+use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,20 +25,6 @@ use Tetranz\Select2EntityBundle\Service\AutocompleteService;
  */
 class CityController extends AbstractController
 {
-    /**
-     * @var DistrictListingService
-     */
-    private $districtListing;
-
-    /**
-     * CityController constructor.
-     * @param DistrictListingService $districtListing
-     */
-    public function __construct(DistrictListingService $districtListing)
-    {
-        $this->districtListing = $districtListing;
-    }
-
     /**
      * @Route("/", name="city_index", methods={"GET"})
      *
@@ -96,29 +84,39 @@ class CityController extends AbstractController
     /**
      * @Route("/{id}", name="city_show", methods={"GET"})
      *
-     * @param City    $city
+     * @param City          $city
      *
-     * @param Request $request
+     * @param Request       $request
+     *
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
      */
-    public function show(City $city, Request $request): Response
+    public function show(City $city, Request $request, SearchService $searchService): Response
     {
         return $this->render('city/show.html.twig', [
             'city' => $city,
-            'districts' => $this->createDistrictPagination($city, $request),
+            'districts' => $this->getDistrictPagination($city, $request, $searchService),
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="city_edit", methods={"GET","POST"})
      *
-     * @param Request $request
-     * @param City    $city
+     * @param Request       $request
+     * @param City          $city
+     *
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
+     *
+     * @noinspection PhpUnhandledExceptionInspection
      */
-    public function edit(Request $request, City $city): Response
+    public function edit(Request $request, City $city, SearchService $searchService): Response
     {
         $districts = $city->getDistricts()->getValues();
         $form = $this->createForm(CityType::class, $city);
@@ -137,7 +135,7 @@ class CityController extends AbstractController
         return $this->render('city/edit.html.twig', [
             'city' => $city,
             'form' => $form->createView(),
-            'districts' => $this->createDistrictPagination($city, $request),
+            'districts' => $this->getDistrictPagination($city, $request, $searchService),
         ]);
     }
 
@@ -180,17 +178,20 @@ class CityController extends AbstractController
     }
 
     /**
-     * @param City    $city
-     * @param Request $request
+     * @param City          $city
+     * @param Request       $request
+     * @param SearchService $searchService
      *
      * @return PaginationInterface
+     *
+     * @throws Exception
      */
-    private function createDistrictPagination(City $city, Request $request): PaginationInterface
+    private function getDistrictPagination(City $city, Request $request, SearchService $searchService): PaginationInterface
     {
-        return $this->districtListing->getDistrictListing(
-            $city->getId(),
-            $request->get('page'),
-            $request->get('search')
-        );
+        $criteria = new DistrictCriteria();
+        $criteria->cityId = $city->getId();
+        $criteria->search = $request->get('search', null);
+
+        return $searchService->search($criteria, $request);
     }
 }

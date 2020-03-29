@@ -14,39 +14,20 @@ use Doctrine\ORM\QueryBuilder;
  * Class OfferQueryBuilder
  * @package App\Search
  */
-class OfferQueryBuilder implements QueryBuilderInterface
+class OfferQueryBuilder extends AbstractQueryBuilder
 {
-    /**
-     * @var QueryBuilder
-     */
-    private $builder;
-
-    /**
-     * @var OfferCriteria
-     */
-    private $criteria;
-
-    /**
-     * OfferQueryBuilder constructor.
-     * @param QueryBuilder  $builder
-     * @param OfferCriteria $criteria
-     */
-    public function __construct(QueryBuilder $builder, OfferCriteria $criteria)
-    {
-        $this->criteria = $criteria;
-        $this->builder = $builder
-            ->addSelect('o')
-            ->from(Offer::class, 'o')
-            ->groupBy('o.id')
-            ->join('o.tags', 't')
-            ->join('o.exchangeTags', 'et');
-    }
-
     /**
      * @return QueryBuilder
      */
     public function buildQuery(): QueryBuilder
     {
+        $this->builder
+            ->addSelect('o')
+            ->from(Offer::class, 'o')
+            ->groupBy('o.id')
+            ->join('o.tags', 't')
+            ->join('o.exchangeTags', 'et');
+
         if ($this->criteria->hasTags()) {
             $this->searchWithTags();
         }
@@ -63,7 +44,6 @@ class OfferQueryBuilder implements QueryBuilderInterface
             $this->builder
                 ->andWhere('o.userId = :userId')
                 ->setParameter(':userId', $this->criteria->userId, ParameterType::INTEGER);
-
         }
 
         $this->searchWithActive();

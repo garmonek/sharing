@@ -77,17 +77,6 @@ class OfferCriteriaType extends AbstractType
             ]);
         }
 
-        if ($options[self::ENABLE_ACTIVE]) {
-            $builder->add('active', ChoiceType::class, [
-                'label' => 'form.offer.active.label',
-                'choices' => [
-                    'form.offer.active.yes.label' => OfferCriteria::OFFER_ACTIVE,
-                    'form.offer.active.no.label' => OfferCriteria::OFFER_INACTIVE,
-                    'form.offer.active.all.label' => OfferCriteria::OFFER_ALL,
-                ],
-            ]);
-        }
-
         $builder->add('districts', Select2EntityType::class, [
             'label' => 'form.offer.districts.label',
             'multiple' => true,
@@ -110,8 +99,20 @@ class OfferCriteriaType extends AbstractType
                 'tag_separators' => '[","]',
             ],
             'placeholder' => 'form.offer.districts.placeholder',
-        ])
-        ->add('sortDirection', ChoiceType::class, [
+        ]);
+
+        if ($options[self::ENABLE_ACTIVE]) {
+            $builder->add('active', ChoiceType::class, [
+                'label' => 'form.offer.active.label',
+                'choices' => [
+                    'form.offer.active.yes.label' => OfferCriteria::OFFER_ACTIVE,
+                    'form.offer.active.no.label' => OfferCriteria::OFFER_INACTIVE,
+                    'form.offer.active.all.label' => OfferCriteria::OFFER_ALL,
+                ],
+            ]);
+        }
+
+        $builder->add('sortDirection', ChoiceType::class, [
             'label' => 'form.offer.sortDirection.label',
             'choices' => [
                 'form.offer.sortDirection.asc.label' => OfferCriteria::SORT_DIRECTION_ASC,
@@ -140,7 +141,7 @@ class OfferCriteriaType extends AbstractType
             'csrf_protection' => false,
             self::ENABLE_TAGS => true,
             self::ENABLE_EXCHANGE_TAGS => true,
-            self::ENABLE_ACTIVE => true
+            self::ENABLE_ACTIVE => true,
         ]);
     }
 }

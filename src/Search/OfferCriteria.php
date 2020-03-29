@@ -62,11 +62,6 @@ class OfferCriteria extends AbstractCriteria
     public $userId = null;
 
     /**
-     * @var int
-     */
-    public $limit = 10;
-
-    /**
      * @return bool
      */
     public function hasTags(): bool

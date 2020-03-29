@@ -29,7 +29,7 @@ class ImageController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('image_index');
+        return $this->redirect($request->headers->get('referer'));
     }
 
 //    public function index(ImageRepository $imageRepository): Response

@@ -11,5 +11,8 @@ namespace App\Search;
  */
 abstract class AbstractCriteria
 {
-
+    /**
+     * @var int
+     */
+    public $limit = 10;
 }

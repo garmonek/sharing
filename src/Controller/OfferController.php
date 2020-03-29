@@ -9,10 +9,10 @@ use App\Entity\Image;
 use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
+use App\Search\ImageCriteria;
 use App\Search\OfferCriteriaType;
 use App\Search\OfferCriteria;
 use App\Search\SearchService;
-use App\Service\ImagesListingService;
 use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -30,20 +30,6 @@ use Tetranz\Select2EntityBundle\Service\AutocompleteService;
  */
 class OfferController extends AbstractController
 {
-    /**
-     * @var ImagesListingService
-     */
-    private $imagesListing;
-
-    /**
-     * OfferController constructor.
-     * @param ImagesListingService $imagesListing
-     */
-    public function __construct(ImagesListingService $imagesListing)
-    {
-        $this->imagesListing = $imagesListing;
-    }
-
     /**
      * @Route("/", name="offer_index", methods={"GET"})
      *
@@ -136,11 +122,18 @@ class OfferController extends AbstractController
     /**
      * @Route("/{id}", name="offer_show", methods={"GET"})
      *
-     * @param Offer   $offer
+     * @param Offer         $offer
      *
-     * @param Request $request
+     * @param Request       $request
+     *
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     * @noinspection PhpUnhandledExceptionInspection
      */
     public function show(Offer $offer, Request $request, SearchService $searchService): Response
     {
@@ -149,7 +142,7 @@ class OfferController extends AbstractController
         $searchForm = $this->createForm(OfferCriteriaType::class, $criteria, [
             OfferCriteriaType::ENABLE_TAGS => false,
             OfferCriteriaType::ENABLE_EXCHANGE_TAGS => false,
-            OfferCriteriaType::ENABLE_ACTIVE => false
+            OfferCriteriaType::ENABLE_ACTIVE => false,
         ]);
         $searchForm->handleRequest($request);
 
@@ -159,7 +152,7 @@ class OfferController extends AbstractController
 
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
-            'images' => $this->makeImagesPagination($offer, $request),
+            'images' => $this->getImagesPagination($offer, $request, $searchService),
             'search_form' => $searchForm->createView(),
             'offers' => $exchangeOffers,
         ]);
@@ -168,12 +161,18 @@ class OfferController extends AbstractController
     /**
      * @Route("/{id}/edit", name="offer_edit", methods={"GET","POST"})
      *
-     * @param Request $request
-     * @param Offer   $offer
+     * @param Request       $request
+     * @param Offer         $offer
+     *
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
+     *
+     * @noinspection PhpUnhandledExceptionInspection
      */
-    public function edit(Request $request, Offer $offer): Response
+    public function edit(Request $request, Offer $offer, SearchService $searchService): Response
     {
         $images = $offer->getImages()->map(function (Image $image) {
             return $image;
@@ -195,7 +194,7 @@ class OfferController extends AbstractController
         return $this->render('offer/edit.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
-            'images' => $this->makeImagesPagination($offer, $request),
+            'images' => $this->getImagesPagination($offer, $request, $searchService),
         ]);
     }
 
@@ -250,13 +249,19 @@ class OfferController extends AbstractController
     }
 
     /**
-     * @param Offer   $offer
-     * @param Request $request
+     * @param Offer         $offer
+     * @param Request       $request
+     * @param SearchService $searchService
      *
      * @return PaginationInterface
+     *
+     * @throws Exception
      */
-    private function makeImagesPagination(Offer $offer, Request $request): PaginationInterface
+    private function getImagesPagination(Offer $offer, Request $request, SearchService $searchService): PaginationInterface
     {
-        return $this->imagesListing->getOfferImagesListing($offer->getId(), $request->get('page', 1));
+        $imageCriteria = new ImageCriteria();
+        $imageCriteria->offerIds = [$offer->getId()];
+
+        return $searchService->search($imageCriteria, $request);
     }
 }

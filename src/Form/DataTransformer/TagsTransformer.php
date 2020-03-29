@@ -3,7 +3,6 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\AbstractTimestampableEntity;
-use App\Entity\Tag;
 use Tetranz\Select2EntityBundle\Form\DataTransformer\EntitiesToPropertyTransformer;
 
 /**
@@ -29,6 +28,7 @@ class TagsTransformer extends EntitiesToPropertyTransformer
 
         $cleanValues = array_map(function (string $value) {
             $value = strtolower($value);
+
             return str_replace($this->newTagPrefix, '', $value);
         }, $values);
 

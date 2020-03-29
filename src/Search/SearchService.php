@@ -7,6 +7,7 @@ namespace App\Search;
 
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,6 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SearchService
 {
+    /**
+     * @var int
+     */
+    private $pageCount = 1;
+
     /**
      * @var PaginatorInterface
      */
@@ -47,11 +53,28 @@ class SearchService
     public function search(AbstractCriteria $criteria, Request $request)
     {
         /** @noinspection PhpUnhandledExceptionInspection */
-
-        return $this->paginator->paginate(
-            $this->builderFactory->create($criteria),
-            $request->get('page', 1),
+        $pageParameterName = $this->createPageParameterName();
+        $pagination = $this->paginator->paginate(
+            $this->builderFactory->createQuery($criteria),
+            $request->get($pageParameterName, 1),
             $criteria->limit
         );
+
+        $pagination->setPaginatorOptions([
+            Paginator::PAGE_PARAMETER_NAME => $pageParameterName,
+        ]);
+
+        return $pagination;
+    }
+
+    /**
+     * @return string
+     */
+    private function createPageParameterName(): string
+    {
+        $name = 'p'.$this->pageCount.'page';
+        $this->pageCount++;
+
+        return $name;
     }
 }

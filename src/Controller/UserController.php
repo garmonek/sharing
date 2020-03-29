@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Search\OfferCriteria;
 use App\Search\OfferCriteriaType;
 use App\Search\SearchService;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +51,13 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}/offer/index", name="user_offer_index", methods={"GET"})
      *
-     * @param Request            $request
-     * @param UserRepository     $userRepository
-     * @param PaginatorInterface $paginator
+     * @param Request       $request
+     * @param User          $user
+     * @param SearchService $searchService
      *
      * @return Response
+     *
+     * @throws Exception
      */
     public function userOfferIndex(Request $request, User $user, SearchService $searchService): Response
     {
@@ -63,13 +66,13 @@ class UserController extends AbstractController
         $searchForm->handleRequest($request);
 
         $criteria->userId = $user->getId();
+        /** @noinspection PhpUnhandledExceptionInspection */
         $offers = $searchService->search($criteria, $request);
 
         return $this->render('offer/index.html.twig', [
             'offers' => $offers,
             'search_form' => $searchForm->createView(),
         ]);
-
     }
 
     /**

@@ -20,6 +20,8 @@ class QueryBuilderFactory
      */
     private $mapping = [
         OfferCriteria::class => OfferQueryBuilder::class,
+        ImageCriteria::class => ImageQueryBuilder::class,
+        DistrictCriteria::class => DistrictQueryBuilder::class,
     ];
 
     /**
@@ -44,14 +46,14 @@ class QueryBuilderFactory
      *
      * @throws Exception
      */
-    public function create(AbstractCriteria $criteria)
+    public function createQuery(AbstractCriteria $criteria)
     {
         $class = get_class($criteria);
         if (!isset($this->mapping[$class])) {
             throw new Exception(sprintf('Unknown criteria %s', $class));
         }
 
-        /** @var QueryBuilderInterface $factoryMethod */
+        /** @var AbstractQueryBuilder $factoryMethod */
         $factoryMethod = new $this->mapping[$class](
             $this->entityManager->createQueryBuilder(),
             $criteria

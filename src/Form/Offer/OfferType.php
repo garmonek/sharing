@@ -58,8 +58,6 @@ class OfferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            //todo set district as one for whole form
-                //todo form should contain many offers with same district
             ->add('district', Select2EntityType::class, [
                 'label' => 'form.city.districts.label',
                 'multiple' => false,
