@@ -10,6 +10,9 @@ use App\Entity\User;
 use App\Form\AdminUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Search\OfferCriteria;
+use App\Search\OfferCriteriaType;
+use App\Search\SearchService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,6 +45,31 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $pagination,
         ]);
+    }
+
+    /**
+     * @Route("/user/{id}/offer/index", name="user_offer_index", methods={"GET"})
+     *
+     * @param Request            $request
+     * @param UserRepository     $userRepository
+     * @param PaginatorInterface $paginator
+     *
+     * @return Response
+     */
+    public function userOfferIndex(Request $request, User $user, SearchService $searchService): Response
+    {
+        $criteria = new OfferCriteria();
+        $searchForm = $this->createForm(OfferCriteriaType::class, $criteria);
+        $searchForm->handleRequest($request);
+
+        $criteria->userId = $user->getId();
+        $offers = $searchService->search($criteria, $request);
+
+        return $this->render('offer/index.html.twig', [
+            'offers' => $offers,
+            'search_form' => $searchForm->createView(),
+        ]);
+
     }
 
     /**
@@ -81,7 +109,7 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render('user/new.html.twig', [

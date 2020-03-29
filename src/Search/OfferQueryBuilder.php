@@ -58,6 +58,14 @@ class OfferQueryBuilder implements QueryBuilderInterface
         if ($this->criteria->hasDistricts()) {
             $this->searchWithDistrict();
         }
+
+        if ($this->criteria->userId) {
+            $this->builder
+                ->andWhere('o.userId = :userId')
+                ->setParameter(':userId', $this->criteria->userId, ParameterType::INTEGER);
+
+        }
+
         $this->searchWithActive();
         $this->searchWithOrder();
 
@@ -71,7 +79,7 @@ class OfferQueryBuilder implements QueryBuilderInterface
     {
         return $this->builder->join('o.district', 'd')
             ->andWhere('d.id in (:districtIds)')
-            ->setParameter(':districtIds', $this->criteria->getDistrictIds());
+            ->setParameter(':districtIds', $this->criteria->getDistrictIds(), Connection::PARAM_INT_ARRAY);
     }
 
     private function searchWithTags(): void

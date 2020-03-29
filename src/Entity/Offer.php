@@ -23,6 +23,13 @@ class Offer extends AbstractTimestampableEntity
     private $webImages;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $userId;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"}, fetch="EAGER")
      *
      * @var ArrayCollection
@@ -315,5 +322,21 @@ class Offer extends AbstractTimestampableEntity
         $this->district = $district;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function setUserId(int $userId): void
+    {
+        $this->userId = $userId;
     }
 }

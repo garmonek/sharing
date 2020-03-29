@@ -57,6 +57,11 @@ class OfferCriteria extends AbstractCriteria
     public $sortValue;
 
     /**
+     * @var ?int
+     */
+    public $userId = null;
+
+    /**
      * @var int
      */
     public $limit = 10;
