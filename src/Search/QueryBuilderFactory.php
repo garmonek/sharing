@@ -36,7 +36,6 @@ class QueryBuilderFactory
         $this->entityManager = $entityManager;
     }
 
-
     /** @noinspection PhpUnhandledExceptionInspection */
     /**
      * @param AbstractCriteria $criteria

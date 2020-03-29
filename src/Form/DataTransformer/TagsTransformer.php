@@ -2,6 +2,7 @@
 
 namespace App\Form\DataTransformer;
 
+use App\Entity\AbstractTimestampableEntity;
 use App\Entity\Tag;
 use Tetranz\Select2EntityBundle\Form\DataTransformer\EntitiesToPropertyTransformer;
 
@@ -23,10 +24,11 @@ class TagsTransformer extends EntitiesToPropertyTransformer
     public function reverseTransform($values)
     {
         if (!is_array($values) || empty($values)) {
-            return array();
+            return [];
         }
 
         $cleanValues = array_map(function (string $value) {
+            $value = strtolower($value);
             return str_replace($this->newTagPrefix, '', $value);
         }, $values);
 
@@ -39,7 +41,7 @@ class TagsTransformer extends EntitiesToPropertyTransformer
             ->getQuery()
             ->getResult();
 
-        $entitiesNames = array_map(function (Tag $tag) {
+        $entitiesNames = array_map(function (AbstractTimestampableEntity $tag) {
             return $tag->getName();
         }, $entities);
 

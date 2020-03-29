@@ -31,6 +31,7 @@ class CityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $cityId = $this->getCityId($options);
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'form.city.name.label',
@@ -41,7 +42,7 @@ class CityType extends AbstractType
                 'remote_route' => 'json_city_districts',
                 'class' => District::class,
                 'property' => 'name',
-                'primary_key' => 'id',
+                'primary_key' => 'name',
                 'text_property' => 'name',
                 'minimum_input_length' => 2,
                 'page_limit' => 10,
