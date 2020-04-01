@@ -96,6 +96,11 @@ class Offer extends AbstractTimestampableEntity
     private $proposedInExchangeRequests;
 
     /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $name;
+
+    /**
      *
      * Offer constructor.
      */
@@ -390,6 +395,18 @@ class Offer extends AbstractTimestampableEntity
     public function setProposedInExchangeRequests(?ExchangeRequest $proposedInExchangeRequests): self
     {
         $this->proposedInExchangeRequests = $proposedInExchangeRequests;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
