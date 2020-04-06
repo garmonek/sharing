@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\DataFixtures;
 
@@ -6,7 +6,6 @@ use App\Entity\City;
 use App\Entity\District;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
 * User Fixtures class
@@ -16,15 +15,15 @@ class DistrictFixtures extends AbstractBaseFixtures implements DependentFixtureI
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {
-        $krk = $this->manager->getRepository(City::class)->findOneBy(['name'=> 'kraków']);
+        $krk = $this->manager->getRepository(City::class)->findOneBy(['name' => 'kraków']);
         $krkDistr = $this->getKrkDistricts();
         $this->persistDistrict($krkDistr, $krk);
 
-        $rz = $this->manager->getRepository(City::class)->findOneBy(['name'=> 'rzeszów']);
+        $rz = $this->manager->getRepository(City::class)->findOneBy(['name' => 'rzeszów']);
         $rzDistr = $this->getRzDistricts();
         $this->persistDistrict($rzDistr, $rz);
 
@@ -40,10 +39,13 @@ class DistrictFixtures extends AbstractBaseFixtures implements DependentFixtureI
     public function getDependencies()
     {
         return [
-            CityFixtures::class
+            CityFixtures::class,
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getKrkDistricts(): array
     {
         return [
@@ -70,6 +72,9 @@ class DistrictFixtures extends AbstractBaseFixtures implements DependentFixtureI
         ];
     }
 
+    /**
+     * @return array
+     */
     private function getRzDistricts(): array
     {
         return [
@@ -85,15 +90,15 @@ class DistrictFixtures extends AbstractBaseFixtures implements DependentFixtureI
             'zalesie',
             'staroniwa',
             'baranówka',
-            'śródmieście'
+            'śródmieście',
         ];
     }
 
     /**
      * @param array $districtsNames
-     * @param object|null $city
+     * @param City  $city
      */
-    private function persistDistrict(array $districtsNames, ?object $city): void
+    private function persistDistrict(array $districtsNames, City $city): void
     {
         foreach ($districtsNames as $districtsName) {
             $district = new District();
@@ -103,5 +108,4 @@ class DistrictFixtures extends AbstractBaseFixtures implements DependentFixtureI
             $this->manager->persist($district);
         }
     }
-
 }

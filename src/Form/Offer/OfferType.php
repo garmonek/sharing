@@ -60,7 +60,7 @@ class OfferType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => true
+                'required' => true,
             ])
             ->add('district', Select2EntityType::class, [
                 'label' => 'form.city.districts.label',

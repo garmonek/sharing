@@ -70,8 +70,8 @@ class OfferQueryBuilder extends AbstractQueryBuilder
 
     private function searchWithExchangeTags(): void
     {
-        $this->builder->andwhere('et.id in (:tagIds)');
-        $this->builder->setParameter(':tagIds', $this->criteria->getExchangeTagIds(), Connection::PARAM_INT_ARRAY);
+        $this->builder->andwhere('et.id in (:exchangeTagIds)');
+        $this->builder->setParameter(':exchangeTagIds', $this->criteria->getExchangeTagIds(), Connection::PARAM_INT_ARRAY);
     }
 
     private function searchWithActive(): void
@@ -118,6 +118,12 @@ class OfferQueryBuilder extends AbstractQueryBuilder
                 if ($this->criteria->hasExchangeTags() && !$this->criteria->hasTags()) {
                     $this->builder
                         ->orderBy('COUNT(et.id)', 'DESC');
+                }
+
+                if ($this->criteria->hasTags() && $this->criteria->hasExchangeTags()) {
+                    $this->builder
+                        ->addOrderBy('COUNT(t.id)', 'DESC')
+                        ->addOrderBy('COUNT(et.id)', 'DESC');
                 }
         }
     }

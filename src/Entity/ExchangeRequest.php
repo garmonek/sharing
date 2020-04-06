@@ -37,16 +37,27 @@ class ExchangeRequest extends AbstractTimestampableEntity
         $this->proposals = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return Offer|null
+     */
     public function getTarget(): ?Offer
     {
         return $this->target;
     }
 
+    /**
+     * @param Offer|null $target
+     *
+     * @return $this
+     */
     public function setTarget(?Offer $target): self
     {
         $this->target = $target;
@@ -62,6 +73,11 @@ class ExchangeRequest extends AbstractTimestampableEntity
         return $this->proposals;
     }
 
+    /**
+     * @param Offer $proposals
+     *
+     * @return $this
+     */
     public function addProposal(Offer $proposals): self
     {
         if (!$this->proposals->contains($proposals)) {
@@ -72,6 +88,11 @@ class ExchangeRequest extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @param Offer $proposals
+     *
+     * @return $this
+     */
     public function removeProposal(Offer $proposals): self
     {
         if ($this->proposals->contains($proposals)) {
@@ -85,11 +106,19 @@ class ExchangeRequest extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMessage(): ?string
     {
         return $this->message;
     }
 
+    /**
+     * @param string|null $message
+     *
+     * @return $this
+     */
     public function setMessage(?string $message): self
     {
         $this->message = $message;
@@ -97,11 +126,19 @@ class ExchangeRequest extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

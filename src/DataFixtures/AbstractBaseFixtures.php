@@ -1,4 +1,6 @@
-<?php
+<?php /** @noinspection PhpSignatureMismatchDuringInheritanceInspection */
+/** @noinspection PhpHierarchyChecksInspection */
+
 /**
  * Abstract base fixture.
  */
@@ -8,6 +10,7 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 
 /**
  * Class AbstractBaseFixtures.
@@ -17,21 +20,21 @@ abstract class AbstractBaseFixtures extends Fixture
     /**
      * Faker.
      *
-     * @var \Faker\Generator
+     * @var Generator
      */
     protected $faker;
 
     /**
      * Object manager.
      *
-     * @var \Doctrine\Common\Persistence\ObjectManager
+     * @var ObjectManager
      */
     protected $manager;
 
     /**
      * Load.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager): void
     {
@@ -43,7 +46,7 @@ abstract class AbstractBaseFixtures extends Fixture
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     abstract protected function loadData(ObjectManager $manager): void;
 }

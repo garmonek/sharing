@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpParamsInspection */
 
 namespace App\DataFixtures;
 
@@ -15,7 +15,7 @@ class RoleFixtures extends AbstractBaseFixtures implements DependentFixtureInter
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {

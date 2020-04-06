@@ -14,14 +14,14 @@ class UserFixtures extends AbstractBaseFixtures
     /**
      * Password encoder.
      *
-     * @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface
+     * @var UserPasswordEncoderInterface
      */
     private $passwordEncoder;
 
     /**
      * UserFixtures constructor.
      *
-     * @param \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $passwordEncoder Password encoder
+     * @param UserPasswordEncoderInterface $passwordEncoder Password encoder
      */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -31,7 +31,7 @@ class UserFixtures extends AbstractBaseFixtures
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {

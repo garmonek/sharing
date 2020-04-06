@@ -43,11 +43,10 @@ class FileUploader
     public function upload(UploadedFile $file): string
     {
         $fileName = bin2hex(random_bytes(32)).'.'.$file->guessExtension();
-
         try {
             $file->move($this->targetDirectory, $fileName);
         } catch (FileException $exception) {
-            // ... handle exception if something happens during file upload
+            dd($exception);
         }
 
         return $fileName;

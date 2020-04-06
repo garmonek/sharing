@@ -8,6 +8,7 @@
         <thead>
         <tr>
             <th>Active</th>
+            <th>Name</th>
             <th>Description</th>
             <th>Id</th>
             <th>CreatedAt</th>
@@ -19,6 +20,7 @@
         {% for offer in offers %}
             <tr>
                 <td>{{ offer.active ? 'Yes' : 'No' }}</td>
+                <td>{{ offer.name }}</td>
                 <td>{{ offer.description }}</td>
                 <td>{{ offer.id }}</td>
                 <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>

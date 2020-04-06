@@ -364,6 +364,16 @@ class Offer extends AbstractTimestampableEntity
         return $this->exchangeRequests;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
     public function addExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if (!$this->exchangeRequests->contains($exchangeRequest)) {
@@ -374,6 +384,16 @@ class Offer extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
     public function removeExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if ($this->exchangeRequests->contains($exchangeRequest)) {
@@ -387,11 +407,27 @@ class Offer extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return ExchangeRequest|null
+     */
+    /**
+     * @return ExchangeRequest|null
+     */
     public function getProposedInExchangeRequests(): ?ExchangeRequest
     {
         return $this->proposedInExchangeRequests;
     }
 
+    /**
+     * @param ExchangeRequest|null $proposedInExchangeRequests
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest|null $proposedInExchangeRequests
+     *
+     * @return $this
+     */
     public function setProposedInExchangeRequests(?ExchangeRequest $proposedInExchangeRequests): self
     {
         $this->proposedInExchangeRequests = $proposedInExchangeRequests;
@@ -399,11 +435,27 @@ class Offer extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
+    /**
+     * @param string $name
+     *
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;

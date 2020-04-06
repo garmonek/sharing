@@ -2,55 +2,38 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\City;
-use App\Entity\District;
 use App\Entity\Tag;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
 * User Fixtures class
 */
-class OfferFixtures extends AbstractBaseFixtures
+class TagFixtures extends AbstractBaseFixtures
 {
+    public const BOROWIKI_TAGS = ['jedzenie', 'grzyby', 'wegetariańskie jedzenie'];
+    public const KLAPKI_TAGS = ['buty', 'obuwie', 'obówie męskie', 'klapki'];
+
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {
-        $tags = [];
-        $matchingTags1 = [
-            'jedzenie',
-            'grzyby',
-            'wegetariańskie jedzenie',
-        ];
+        $tags = array_merge(self::BOROWIKI_TAGS, self::KLAPKI_TAGS);
 
         foreach ($tags as $name) {
             $tag = new Tag();
-
             $tag->setName($name);
+            $this->manager->persist($tag);
+        }
+
+        for ($i = 0; $i < 20; $i++) {
+            $tag = new Tag();
+            $tag->setName($this->faker->unique()->word());
             $this->manager->persist($tag);
         }
 
         $this->manager->flush();
     }
-
-    /**
-     * @param array $districtsNames
-     * @param object|null $city
-     */
-    private function persistDistrict(array $districtsNames, ?object $city): void
-    {
-        foreach ($districtsNames as $districtsName) {
-            $district = new District();
-
-            $district->setName($districtsName);
-            $district->setCity($city);
-            $this->manager->persist($district);
-        }
-    }
-
 }

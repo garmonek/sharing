@@ -147,6 +147,7 @@ class OfferController extends AbstractController
         $searchForm->handleRequest($request);
 
         $criteria->tags = $offer->getExchangeTags()->toArray();
+        $criteria->exchangeTags = $offer->getTags()->toArray();
         $criteria->active = OfferCriteria::OFFER_ACTIVE;
         $exchangeOffers = $searchService->search($criteria, $request);
 

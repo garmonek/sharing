@@ -14,11 +14,11 @@ class CityFixtures extends AbstractBaseFixtures
     /**
      * Load data.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     * @param ObjectManager $manager
      */
     public function loadData(ObjectManager $manager): void
     {
-        $cities = ['kraków','rzeszów'];
+        $cities = ['kraków', 'rzeszów'];
 
         foreach ($cities as $name) {
             $city = new City();

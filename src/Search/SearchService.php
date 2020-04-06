@@ -19,7 +19,7 @@ class SearchService
     /**
      * @var int
      */
-    private $pageCount = 1;
+    private $paginationCount = 1;
 
     /**
      * @var PaginatorInterface
@@ -72,8 +72,8 @@ class SearchService
      */
     private function createPageParameterName(): string
     {
-        $name = 'p'.$this->pageCount.'page';
-        $this->pageCount++;
+        $name = 'p'.$this->paginationCount.'page';
+        $this->paginationCount++;
 
         return $name;
     }

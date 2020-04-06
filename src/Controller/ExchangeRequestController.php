@@ -17,6 +17,10 @@ class ExchangeRequestController extends AbstractController
 {
     /**
      * @Route("/", name="exchange_request_index", methods={"GET"})
+     *
+     * @param ExchangeRequestRepository $exchangeRequestRepository
+     *
+     * @return Response
      */
     public function index(ExchangeRequestRepository $exchangeRequestRepository): Response
     {
@@ -27,6 +31,10 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/new", name="exchange_request_new", methods={"GET","POST"})
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +58,10 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}", name="exchange_request_show", methods={"GET"})
+     *
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function show(ExchangeRequest $exchangeRequest): Response
     {
@@ -60,6 +72,11 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="exchange_request_edit", methods={"GET","POST"})
+     *
+     * @param Request         $request
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function edit(Request $request, ExchangeRequest $exchangeRequest): Response
     {
@@ -80,6 +97,11 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}", name="exchange_request_delete", methods={"DELETE"})
+     *
+     * @param Request         $request
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function delete(Request $request, ExchangeRequest $exchangeRequest): Response
     {
