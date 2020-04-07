@@ -86,16 +86,6 @@ class Offer extends AbstractTimestampableEntity
     private $district;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ExchangeRequest", mappedBy="target")
-     */
-    private $exchangeRequests;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ExchangeRequest", inversedBy="proposal")
-     */
-    private $proposedInExchangeRequests;
-
-    /**
      * @ORM\Column(type="string", length=60)
      */
     private $name;
@@ -110,7 +100,6 @@ class Offer extends AbstractTimestampableEntity
         $this->images = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->exchangeTags = new ArrayCollection();
-        $this->exchangeRequests = new ArrayCollection();
     }
 
     /**
@@ -354,85 +343,6 @@ class Offer extends AbstractTimestampableEntity
     public function setUserId(int $userId): void
     {
         $this->userId = $userId;
-    }
-
-    /**
-     * @return Collection|ExchangeRequest[]
-     */
-    public function getExchangeRequests(): Collection
-    {
-        return $this->exchangeRequests;
-    }
-
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
-    public function addExchangeRequest(ExchangeRequest $exchangeRequest): self
-    {
-        if (!$this->exchangeRequests->contains($exchangeRequest)) {
-            $this->exchangeRequests[] = $exchangeRequest;
-            $exchangeRequest->setTarget($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
-    public function removeExchangeRequest(ExchangeRequest $exchangeRequest): self
-    {
-        if ($this->exchangeRequests->contains($exchangeRequest)) {
-            $this->exchangeRequests->removeElement($exchangeRequest);
-            // set the owning side to null (unless already changed)
-            if ($exchangeRequest->getTarget() === $this) {
-                $exchangeRequest->setTarget(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return ExchangeRequest|null
-     */
-    /**
-     * @return ExchangeRequest|null
-     */
-    public function getProposedInExchangeRequests(): ?ExchangeRequest
-    {
-        return $this->proposedInExchangeRequests;
-    }
-
-    /**
-     * @param ExchangeRequest|null $proposedInExchangeRequests
-     *
-     * @return $this
-     */
-    /**
-     * @param ExchangeRequest|null $proposedInExchangeRequests
-     *
-     * @return $this
-     */
-    public function setProposedInExchangeRequests(?ExchangeRequest $proposedInExchangeRequests): self
-    {
-        $this->proposedInExchangeRequests = $proposedInExchangeRequests;
-
-        return $this;
     }
 
     /**

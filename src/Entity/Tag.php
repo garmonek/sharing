@@ -22,6 +22,11 @@ class Tag extends AbstractTimestampableEntity
     private $name;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isValid;
+
+    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -37,6 +42,25 @@ class Tag extends AbstractTimestampableEntity
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    /**
+     * @param bool $isValid
+     * @return $this
+     */
+    public function setIsValid(bool $isValid): self
+    {
+        $this->isValid = $isValid;
 
         return $this;
     }
