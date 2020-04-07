@@ -91,6 +91,11 @@ class Offer extends AbstractTimestampableEntity
     private $name;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\ExchangeRequest", mappedBy="target", orphanRemoval=true)
+     */
+    private $exchangeFor;
+
+    /**
      *
      * Offer constructor.
      */
@@ -100,6 +105,7 @@ class Offer extends AbstractTimestampableEntity
         $this->images = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->exchangeTags = new ArrayCollection();
+        $this->exchangeFor = new ArrayCollection();
     }
 
     /**
@@ -369,6 +375,37 @@ class Offer extends AbstractTimestampableEntity
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ExchangeRequest[]
+     */
+    public function getExchangeFor(): Collection
+    {
+        return $this->exchangeFor;
+    }
+
+    public function addExchangeFor(ExchangeRequest $exchangeFor): self
+    {
+        if (!$this->exchangeFor->contains($exchangeFor)) {
+            $this->exchangeFor[] = $exchangeFor;
+            $exchangeFor->setTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExchangeFor(ExchangeRequest $exchangeFor): self
+    {
+        if ($this->exchangeFor->contains($exchangeFor)) {
+            $this->exchangeFor->removeElement($exchangeFor);
+            // set the owning side to null (unless already changed)
+            if ($exchangeFor->getTarget() === $this) {
+                $exchangeFor->setTarget(null);
+            }
+        }
 
         return $this;
     }
