@@ -6,7 +6,7 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-flexImages/1.0.4/jquery.flex-images.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css">
-
+            {{ encore_entry_link_tags('app') }}
             <style>
                 .imageDelete {
                     position: absolute;
@@ -19,10 +19,12 @@
     <body>
         {% block body %}{% endblock %}
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.full.min.js"></script>
             <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
-
+            <script src="{{ asset('build/app.js') }}"></script>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-flexImages/1.0.4/jquery.flex-images.min.js"></script>
             <script>
