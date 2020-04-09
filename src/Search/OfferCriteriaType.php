@@ -2,11 +2,14 @@
 
 namespace App\Search;
 
+use App\Entity\City;
 use App\Entity\District;
 use App\Entity\Tag;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -77,29 +80,38 @@ class OfferCriteriaType extends AbstractType
             ]);
         }
 
-        $builder->add('districts', Select2EntityType::class, [
-            'label' => 'form.offer.districts.label',
-            'multiple' => true,
-            'remote_route' => 'search_district_autocomplete',
-            'class' => District::class,
-            'property' => 'name',
-            'primary_key' => 'id',
-            'text_property' => 'name',
-            'minimum_input_length' => 2,
-            'page_limit' => 10,
-            'allow_clear' => true,
-            'delay' => 250,
-            'cache' => true,
-            'cache_timeout' => 60000,
-            'language' => 'en',
-            'width' => '100%',
-            'allow_add' => [
-                'enabled' => false,
-                'new_tag_text' => '',
-                'tag_separators' => '[","]',
-            ],
-            'placeholder' => 'form.offer.districts.placeholder',
+        $builder->add('city', EntityType::class, [
+            'label' => 'form.offer.city.label',
+            'class' => City::class,
+            'choice_label' => 'name',
+            'required'   => false,
+            'empty_data' => null,
+            'placeholder' => 'form.offer.city.placeholder.all'
         ]);
+
+//        $builder->add('districts', Select2EntityType::class, [
+//            'label' => 'form.offer.districts.label',
+//            'multiple' => true,
+//            'remote_route' => 'search_district_autocomplete',
+//            'class' => District::class,
+//            'property' => 'name',
+//            'primary_key' => 'id',
+//            'text_property' => 'name',
+//            'minimum_input_length' => 2,
+//            'page_limit' => 10,
+//            'allow_clear' => true,
+//            'delay' => 250,
+//            'cache' => true,
+//            'cache_timeout' => 60000,
+//            'language' => 'en',
+//            'width' => '100%',
+//            'allow_add' => [
+//                'enabled' => false,
+//                'new_tag_text' => '',
+//                'tag_separators' => '[","]',
+//            ],
+//            'placeholder' => 'form.offer.districts.placeholder',
+//        ]);
 
         if ($options[self::ENABLE_ACTIVE]) {
             $builder->add('active', ChoiceType::class, [

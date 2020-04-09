@@ -32,6 +32,13 @@ class District extends AbstractTimestampableEntity
     private $city;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    private $cityId;
+
+    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -49,6 +56,16 @@ class District extends AbstractTimestampableEntity
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getCityId(): int
+    {
+        return $this->cityId;
+    }
+
+    public function setCityId(int $cityId): void
+    {
+        $this->cityId = $cityId;
     }
 
     /**

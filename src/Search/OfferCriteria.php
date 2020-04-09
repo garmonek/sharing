@@ -6,6 +6,7 @@
 namespace App\Search;
 
 use App\Entity\AbstractTimestampableEntity;
+use App\Entity\City;
 use App\Entity\District;
 use App\Entity\Tag;
 
@@ -35,6 +36,11 @@ class OfferCriteria extends AbstractCriteria
      * @var District[]
      */
     public $districts = [];
+
+    /**
+     * @var ?City
+     */
+    public $city;
 
     /**
      * @var Tag[]
@@ -67,6 +73,15 @@ class OfferCriteria extends AbstractCriteria
     public function hasTags(): bool
     {
         return 0 !== count($this->tags);
+    }
+
+    public function getCityId(): ?int
+    {
+        if ($this->city instanceof City) {
+            return $this->city->getId();
+        }
+
+        return null;
     }
 
     /**

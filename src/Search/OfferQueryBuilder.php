@@ -25,6 +25,7 @@ class OfferQueryBuilder extends AbstractQueryBuilder
             ->addSelect('o')
             ->from(Offer::class, 'o')
             ->groupBy('o.id')
+            ->join('o.district', 'd')
             ->join('o.tags', 't')
             ->join('o.exchangeTags', 'et');
 
@@ -34,6 +35,12 @@ class OfferQueryBuilder extends AbstractQueryBuilder
 
         if ($this->criteria->hasExchangeTags()) {
             $this->searchWithExchangeTags();
+        }
+
+        $id = $this->criteria->getCityId();
+        if ($id) {
+            $this->builder->andWhere('d.cityId = :cityId')
+                ->setParameter(':cityId', $id, ParameterType::INTEGER);
         }
 
         if ($this->criteria->hasDistricts()) {
@@ -57,8 +64,7 @@ class OfferQueryBuilder extends AbstractQueryBuilder
      */
     private function searchWithDistrict(): QueryBuilder
     {
-        return $this->builder->join('o.district', 'd')
-            ->andWhere('d.id in (:districtIds)')
+        return $this->builder->andWhere('d.id in (:districtIds)')
             ->setParameter(':districtIds', $this->criteria->getDistrictIds(), Connection::PARAM_INT_ARRAY);
     }
 
