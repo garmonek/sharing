@@ -1,0 +1,12 @@
+{% extends 'offer/_listing.html.twig' %}
+{% set targetOffer = offer %}
+
+{% block listing_actions %}
+    <form action="{{ path('exchange_request_add_proposal')  }}" method="POST">
+        <input type="hidden" name="id" value="{{ exchange_request.id }}">
+        <input type="hidden" name="proposalId" value="{{ offer.id }}">
+        <input type="hidden" name="targetId" value="{{ targetOffer.id }}">
+        <button class="btn btn-primary">{{ button_label|default('Add') }}</button>
+    </form>
+    
+{% endblock %}

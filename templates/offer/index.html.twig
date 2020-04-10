@@ -4,7 +4,8 @@
 
 {% block body %}
     <h1>Offer index</h1>
-    
+    {{ include('offer/_search_form.html.twig') }}
+
     {{ include('offer/_listing.html.twig') }}
 
     <a href="{{ path('offer_new') }}">Create new</a>

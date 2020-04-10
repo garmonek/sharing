@@ -1,6 +1,4 @@
 {% block listing %}
-    {{ include('offer/_search_form.html.twig') }}
-
     <div class="navigation text-center">
         {{ knp_pagination_render(offers) }}
     </div>
@@ -26,8 +24,10 @@
                 <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ offer.updatedAt ? offer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('offer_show', {'id': offer.id}) }}">show</a>
-                    <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
+                    {% block listing_actions %}
+                        <a href="{{ path('offer_show', {'id': offer.id}) }}">show</a>
+                        <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
+                    {% endblock %}
                 </td>
             </tr>
         {% else %}

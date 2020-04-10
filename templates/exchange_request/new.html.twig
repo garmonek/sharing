@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ExchangeRequest{% endblock %}
+
+{% block body %}
+    <h1>Create new ExchangeRequest</h1>
+
+    {{ include('offer/_details.html.twig') }}
+
+    {{ include('image/_index.html.twig') }}
+
+    {{ include('exchange_request/_form.html.twig') }}
+
+{% endblock %}
