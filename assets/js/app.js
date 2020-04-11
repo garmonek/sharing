@@ -16,8 +16,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'select2/dist/js/select2.full.min';
 import 'select2/dist/css/select2.min.css';
 
+import 'lightbox2/dist/js/lightbox-plus-jquery.min';
+import 'lightbox2/dist/css/lightbox.min.css';
+
 import 'javascript-flex-images/flex-images.css';
 import flexImages from 'javascript-flex-images';
 new flexImages({ selector: '.flex-images', rowHeight: 140 });
-
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

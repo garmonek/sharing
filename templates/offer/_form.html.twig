@@ -3,10 +3,11 @@
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
 
+{# flex-images data-w data-h comes from js-plugin#}
 <div class="flex-images" id="gallery">
     {% for image in offer.images %}
         <div class="item" data-w="200" data-h="150">
-            <a href="{{ asset('uploads/imgs/') ~ image.file }}">
+            <a href="{{ asset('uploads/imgs/') ~ image.file }}" data-lightbox="offer-{{ offer.id }}-images">
                 <img src="{{ asset('uploads/imgs/') ~ image.file }}" alt="">
             </a>
 
