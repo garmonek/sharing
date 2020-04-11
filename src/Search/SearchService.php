@@ -42,6 +42,17 @@ class SearchService
         $this->builderFactory = $builderFactory;
     }
 
+    public function createEmptyPagination(): PaginationInterface
+    {
+        $pagination = $this->paginator->paginate([], 1, 1);
+        $pageParameterName = $this->createPageParameterName();
+        $pagination->setPaginatorOptions([
+            Paginator::PAGE_PARAMETER_NAME => $pageParameterName,
+        ]);
+
+        return $pagination;
+    }
+
     /**
      * @param AbstractCriteria $criteria
      * @param Request          $request
@@ -50,7 +61,7 @@ class SearchService
      *
      * @throws Exception
      */
-    public function search(AbstractCriteria $criteria, Request $request)
+    public function search(AbstractCriteria $criteria, Request $request): PaginationInterface
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         $pageParameterName = $this->createPageParameterName();

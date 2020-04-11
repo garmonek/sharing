@@ -20,6 +20,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -149,15 +150,19 @@ class OfferController extends AbstractController
         ]);
         $searchForm->handleRequest($request);
 
-        $criteria->tags = $offer->getExchangeTags()->toArray();
-        $criteria->exchangeTags = $offer->getTags()->toArray();
-        $criteria->active = OfferCriteria::OFFER_ACTIVE;
-        $criteria->userId = $this->getUser()->getId();
-        $exchangeOffers = $searchService->search($criteria, $request);
+        $user = $this->getUser();
+        $exchangeOffers = $searchService->createEmptyPagination();
+        if ($user) {
+            $criteria->userId = $user->getId();
+            $criteria->tags = $offer->getExchangeTags()->toArray();
+            $criteria->exchangeTags = $offer->getTags()->toArray();
+            $criteria->active = OfferCriteria::OFFER_ACTIVE;
+            $exchangeOffers = $searchService->search($criteria, $request);
+        }
 
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
-            'images' => $this->getImagesPagination($offer, $request, $searchService),
+//            'images' => $this->getImagesPagination($offer, $request, $searchService),
             'search_form' => $searchForm->createView(),
             'offers' => $exchangeOffers,
         ]);
@@ -199,7 +204,7 @@ class OfferController extends AbstractController
         return $this->render('offer/edit.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
-            'images' => $this->getImagesPagination($offer, $request, $searchService),
+//            'images' => $this->getImagesPagination($offer, $request, $searchService),
         ]);
     }
 
