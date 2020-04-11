@@ -30,15 +30,15 @@ class ExchangeRequest
     private $message;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="exchangeRequest", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Offer")
      */
     private $proposals;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="exchangeRequests")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -74,17 +74,6 @@ class ExchangeRequest
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Offer[]
@@ -108,6 +97,18 @@ class ExchangeRequest
         if ($this->proposals->contains($proposal)) {
             $this->proposals->removeElement($proposal);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

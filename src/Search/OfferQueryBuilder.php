@@ -56,6 +56,8 @@ class OfferQueryBuilder extends AbstractQueryBuilder
         $this->searchWithActive();
         $this->searchWithOrder();
 
+
+
         return $this->builder;
     }
 

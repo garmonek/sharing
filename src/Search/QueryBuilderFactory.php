@@ -22,6 +22,7 @@ class QueryBuilderFactory
         OfferCriteria::class => OfferQueryBuilder::class,
         ImageCriteria::class => ImageQueryBuilder::class,
         DistrictCriteria::class => DistrictQueryBuilder::class,
+        ExchangeRequestCriteria::class => ExchangeRequestQueryBuilder::class
     ];
 
     /**

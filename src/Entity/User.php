@@ -108,11 +108,6 @@ class User extends AbstractTimestampableEntity implements UserInterface
     private $exchangeRequests;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ExchangeRequest", mappedBy="user", cascade={"persist", "remove"})
-     */
-    private $exchangeRequest;
-
-    /**
      * User constructor.
      */
     public function __construct()
@@ -383,11 +378,6 @@ class User extends AbstractTimestampableEntity implements UserInterface
         return $this->exchangeRequests;
     }
 
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
     public function addExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if (!$this->exchangeRequests->contains($exchangeRequest)) {
@@ -398,11 +388,6 @@ class User extends AbstractTimestampableEntity implements UserInterface
         return $this;
     }
 
-    /**
-     * @param ExchangeRequest $exchangeRequest
-     *
-     * @return $this
-     */
     public function removeExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if ($this->exchangeRequests->contains($exchangeRequest)) {
@@ -411,23 +396,6 @@ class User extends AbstractTimestampableEntity implements UserInterface
             if ($exchangeRequest->getUser() === $this) {
                 $exchangeRequest->setUser(null);
             }
-        }
-
-        return $this;
-    }
-
-    public function getExchangeRequest(): ?ExchangeRequest
-    {
-        return $this->exchangeRequest;
-    }
-
-    public function setExchangeRequest(ExchangeRequest $exchangeRequest): self
-    {
-        $this->exchangeRequest = $exchangeRequest;
-
-        // set the owning side of the relation if necessary
-        if ($exchangeRequest->getUser() !== $this) {
-            $exchangeRequest->setUser($this);
         }
 
         return $this;

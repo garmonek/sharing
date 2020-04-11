@@ -49,7 +49,7 @@ class OfferCriteriaType extends AbstractType
                 'allow_add' => [
                     'enabled' => false,
                     'new_tag_text' => '',
-                    'tag_separators' => '[","a]',
+                    'tag_separators' => '[","]',
                 ],
                 'placeholder' => 'form.offer.tags.placeholder',
             ]);

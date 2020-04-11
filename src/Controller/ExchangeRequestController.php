@@ -19,11 +19,38 @@ class ExchangeRequestController extends AbstractController
     /**
      * @Route("/", name="exchange_request_index", methods={"GET"})
      */
-    public function index(ExchangeRequestRepository $exchangeRequestRepository): Response
+    public function index(Request $request, ExchangeRequestRepository $exchangeRequestRepository, SearchService $searchService): Response
     {
+        $criteria = new ExchangeRequestCriteria();
+        $form = $this->createForm(ExchangeRequestCriteriaType::class, $criteria);
+
+        $form->handleRequest($request);
+        $criteria->userId = $this->getUser()->getId();
+
+        $exchangeRequests = $searchService->search($criteria, $request);
+
         return $this->render('exchange_request/index.html.twig', [
-            'exchange_requests' => $exchangeRequestRepository->findAll(),
+            'exchange_requests' => $exchangeRequests,
+            'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/tag/autocomplete", name="exchange_request_tag_autocomplete", methods={"GET"})
+     *
+     * @param Request             $request
+     * @param AutocompleteService $autocomplete
+     *
+     * @return JsonResponse
+     *
+     *
+     * @noinspection PhpUnhandledExceptionInspection
+     */
+    public function tagAutocomplete(Request $request, AutocompleteService $autocomplete): JsonResponse
+    {
+        return new JsonResponse(
+            $autocomplete->getAutocompleteResults($request, ExchangeRequestCriteriaType::class)
+        );
     }
 
     /**
@@ -35,6 +62,49 @@ class ExchangeRequestController extends AbstractController
             'exchange_request' => $exchangeRequest,
         ]);
     }
+
+    /**
+     * @Route("/new/target/{id}", name="exchange_request_new", methods={"GET","POST"})
+     */
+    public function newExchangeRequest(Offer $offer, Request $request, SearchService $searchService): Response
+    {
+        $exchangeRequest = new ExchangeRequest();
+
+        $criteria = new OfferCriteria();
+        $criteria->tags = $offer->getExchangeTags()->toArray();
+        $criteria->exchangeTags = $offer->getTags()->toArray();
+        $criteria->userId = $this->getUser()->getId();
+        $criteria->active = OfferCriteria::OFFER_ACTIVE;
+        $exchangeOffers = $searchService->search($criteria, $request);
+
+        $form = $this->createForm(
+            ExchangeRequestType::class,
+            $exchangeRequest,
+            [
+                'matchingOffers' => $exchangeOffers
+            ]
+        );
+
+        $form->handleRequest($request);
+
+        $exchangeRequest->setTarget($offer);
+        $exchangeRequest->setUser($this->getUser());
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($exchangeRequest);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('exchange_request_index');
+        }
+
+        return $this->render('exchange_request/new.html.twig', [
+            'offer' => $offer,
+            'exchange_request' => $exchangeRequest,
+            'form' => $form->createView(),
+        ]);
+    }
+
 
 //    /**
 //     * @Route(

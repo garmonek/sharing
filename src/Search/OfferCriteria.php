@@ -123,16 +123,4 @@ class OfferCriteria extends AbstractCriteria
     {
         return $this->getIds($this->districts);
     }
-
-    /**
-     * @param array $instances
-     *
-     * @return array
-     */
-    private function getIds(array $instances): array
-    {
-        return array_map(function (AbstractTimestampableEntity $instance) {
-            return $instance->getId();
-        }, $instances);
-    }
 }

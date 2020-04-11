@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
+{% set target = exchange_request.target %}
 
 {% block title %}ExchangeRequest{% endblock %}
 
 {% block body %}
     <h1>ExchangeRequest</h1>
+
+
 
     <table class="table">
         <tbody>
@@ -15,6 +18,55 @@
                 <th>Message</th>
                 <td>{{ exchange_request.message }}</td>
             </tr>
+            {% for proposal in exchange_request.proposals %}
+                <tr>
+{#                    <td>{{ proposal.active ? 'Yes' : 'No' }}</td>#}
+                    <tr>
+                        <th>{{ 'name'|trans }}</th>
+                        <td>{{ proposal.name }}</td>
+                    </tr>
+{#                    #}
+{#                    <th>{{ 'description'|trans }}</th>#}
+{#                    <td>{{ proposal.description }}</td>#}
+{#                    <td>{{ proposal.id }}</td>#}
+                    <tr>
+                        <th>{{ 'tags' | trans }}</th>
+                        {% for tag in proposal.tags %}
+                            <td>{{ tag.name }}</td>
+                        {% endfor %}
+                    </tr>
+
+                    <tr>
+                        <th>{{ 'exhcangeTags' | trans }}</th>
+                        {% for exchangeTag in proposal.exchangeTags %}
+                            <td>{{ exchangeTag.name }}</td>
+                        {% endfor %}
+                    </tr>
+            </tr>
+            {% endfor %}
+            <hr>
+            <tr>
+                <th>{{ 'target.name'|trans }}</th>
+                <td>{{ target.name }}</td>
+            </tr>
+            {#                    #}
+            {#                    <th>{{ 'description'|trans }}</th>#}
+            {#                    <td>{{ target.description }}</td>#}
+            {#                    <td>{{ target.id }}</td>#}
+            <tr>
+                <th>{{ 'target.tags' | trans }}</th>
+                {% for tag in target.tags %}
+                    <td>{{ tag.name }}</td>
+                {% endfor %}
+            </tr>
+
+            <tr>
+                <th>{{ 'target.exhcangeTags' | trans }}</th>
+                {% for exchangeTag in target.exchangeTags %}
+                    <td>{{ exchangeTag.name }}</td>
+                {% endfor %}
+            </tr>
+
         </tbody>
     </table>
 

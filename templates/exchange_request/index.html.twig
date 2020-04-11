@@ -5,6 +5,8 @@
 {% block body %}
     <h1>ExchangeRequest index</h1>
 
+    {{ include('exchange_request/_search_form.html.twig') }}
+
     <table class="table">
         <thead>
             <tr>
@@ -31,5 +33,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('exchange_request_new') }}">Create new</a>
 {% endblock %}
