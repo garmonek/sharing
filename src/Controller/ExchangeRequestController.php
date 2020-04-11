@@ -3,13 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\ExchangeRequest;
+use App\Entity\Offer;
 use App\Form\ExchangeRequestType;
+use App\Form\Offer\OfferType;
 use App\Repository\ExchangeRequestRepository;
 use App\Repository\OfferRepository;
+use App\Search\ExchangeRequestCriteria;
+use App\Search\ExchangeRequestCriteriaType;
+use App\Search\OfferCriteria;
+use App\Search\SearchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Tetranz\Select2EntityBundle\Service\AutocompleteService;
 
 /**
  * @Route("/exchange/request")
@@ -33,6 +42,19 @@ class ExchangeRequestController extends AbstractController
             'exchange_requests' => $exchangeRequests,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/upsert/redirect/{id}", name="exchange_request_upsert_redirect", methods={"POST"})
+     */
+    public function upsertExchangeRequestRedirect(?Offer $offer, Request $request, ExchangeRequestRepository $requestRepository): RedirectResponse
+    {
+        $requestFound = $requestRepository->findOneBy(['target' => $offer, 'user' => $this->getUser()]);
+        if ($requestFound) {
+            return $this->redirectToRoute('exchange_request_edit', ['id' => $requestFound->getId()]);
+        }
+
+        return $this->redirectToRoute('exchange_request_new', ['id' => $offer->getId()]);
     }
 
     /**
@@ -165,6 +187,7 @@ class ExchangeRequestController extends AbstractController
      */
     public function edit(Request $request, ExchangeRequest $exchangeRequest): Response
     {
+        //todo add prevent from adding to many requests per target&user same in createNew
         $form = $this->createForm(ExchangeRequestType::class, $exchangeRequest);
         $form->handleRequest($request);
 

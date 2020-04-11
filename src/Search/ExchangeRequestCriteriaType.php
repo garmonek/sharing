@@ -75,6 +75,7 @@ class ExchangeRequestCriteriaType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ExchangeRequestCriteria::class,
+            'csrf_protection' => false,
         ]);
     }
 

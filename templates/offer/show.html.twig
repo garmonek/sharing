@@ -3,7 +3,9 @@
 {% block title %}Offer{% endblock %}
 
 {% block body %}
-    <a href="{{ path('exchange_request_new', {'id':offer.id}) }}">Request Exchange</a>
+    {% set offerId = offer.id %}
+    {{ include('exchange_request/_upsert_link.html.twig') }}
+
     <h1>Offer</h1>
 
     {{ include('offer/_details.html.twig') }}
