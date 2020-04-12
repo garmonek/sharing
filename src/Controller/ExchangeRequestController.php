@@ -5,9 +5,7 @@ namespace App\Controller;
 use App\Entity\ExchangeRequest;
 use App\Entity\Offer;
 use App\Form\ExchangeRequestType;
-use App\Form\Offer\OfferType;
 use App\Repository\ExchangeRequestRepository;
-use App\Repository\OfferRepository;
 use App\Search\ExchangeRequestCriteria;
 use App\Search\ExchangeRequestCriteriaType;
 use App\Search\OfferCriteria;
@@ -45,19 +43,6 @@ class ExchangeRequestController extends AbstractController
     }
 
     /**
-     * @Route("/upsert/redirect/{id}", name="exchange_request_upsert_redirect", methods={"POST"})
-     */
-    public function upsertExchangeRequestRedirect(?Offer $offer, Request $request, ExchangeRequestRepository $requestRepository): RedirectResponse
-    {
-        $requestFound = $requestRepository->findOneBy(['target' => $offer, 'user' => $this->getUser()]);
-        if ($requestFound) {
-            return $this->redirectToRoute('exchange_request_edit', ['id' => $requestFound->getId()]);
-        }
-
-        return $this->redirectToRoute('exchange_request_new', ['id' => $offer->getId()]);
-    }
-
-    /**
      * @Route("/tag/autocomplete", name="exchange_request_tag_autocomplete", methods={"GET"})
      *
      * @param Request             $request
@@ -86,16 +71,18 @@ class ExchangeRequestController extends AbstractController
     }
 
     /**
-     * @Route("/new/target/{id}", name="exchange_request_new", methods={"GET","POST"})
+     * @Route("/new/target/{id}", name="exchange_request_upsert", methods={"GET","POST"})
      */
-    public function newExchangeRequest(Offer $offer, Request $request, SearchService $searchService): Response
+    public function upsertExchangeRequest(Offer $offer, Request $request, SearchService $searchService, ExchangeRequestRepository $requestRepository): Response
     {
-        $exchangeRequest = new ExchangeRequest();
+        $user = $this->getUser();
+        $exchangeRequest = $requestRepository->findOneBy(['user' => $user, 'target' => $offer])
+            ?? new ExchangeRequest();
 
         $criteria = new OfferCriteria();
         $criteria->tags = $offer->getExchangeTags()->toArray();
         $criteria->exchangeTags = $offer->getTags()->toArray();
-        $criteria->userId = $this->getUser()->getId();
+        $criteria->userId = $user->getId();
         $criteria->active = OfferCriteria::OFFER_ACTIVE;
         $exchangeOffers = $searchService->search($criteria, $request);
 
@@ -126,7 +113,6 @@ class ExchangeRequestController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 
 //    /**
 //     * @Route(
