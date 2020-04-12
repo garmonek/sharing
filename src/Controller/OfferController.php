@@ -162,7 +162,6 @@ class OfferController extends AbstractController
 
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
-//            'images' => $this->getImagesPagination($offer, $request, $searchService),
             'search_form' => $searchForm->createView(),
             'offers' => $exchangeOffers,
         ]);
@@ -204,7 +203,6 @@ class OfferController extends AbstractController
         return $this->render('offer/edit.html.twig', [
             'offer' => $offer,
             'form' => $form->createView(),
-//            'images' => $this->getImagesPagination($offer, $request, $searchService),
         ]);
     }
 
