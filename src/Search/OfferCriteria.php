@@ -73,7 +73,7 @@ class OfferCriteria extends AbstractCriteria
     {
         return 0 !== count($this->tags);
     }
-    
+
     /**
      * @return int|null
      */

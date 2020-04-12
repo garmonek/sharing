@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tag;
 use App\Form\TagType;
 use App\Repository\TagRepository;
+use App\Search\SearchService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +25,15 @@ class TagController extends AbstractController
      *
      * @return Response
      */
-    public function index(TagRepository $tagRepository): Response
+    public function index(TagRepository $tagRepository, SearchService $searchService, Request $request): Response
     {
+        $tags = $searchService->searchByQuery(
+            $tagRepository->createQueryBuilder('e'),
+            $request
+        );
+
         return $this->render('tag/index.html.twig', [
-            'tags' => $tagRepository->findAll(),
+            'tags' => $tags,
         ]);
     }
 

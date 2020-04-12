@@ -13,6 +13,7 @@ use App\Search\DistrictCriteria;
 use App\Search\SearchService;
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +33,18 @@ class CityController extends AbstractController
      *
      * @return Response
      */
-    public function index(CityRepository $cityRepository): Response
-    {
+    public function index(
+        CityRepository $cityRepository,
+        SearchService $searchService,
+        Request $request
+    ): Response {
+        $cities = $searchService->searchByQuery(
+            $cityRepository->createQueryBuilder('c'),
+            $request
+        );
+
         return $this->render('city/index.html.twig', [
-            'cities' => $cityRepository->findAll(),
+            'cities' => $cities,
         ]);
     }
 

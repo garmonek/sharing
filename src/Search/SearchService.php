@@ -5,6 +5,7 @@
 
 namespace App\Search;
 
+use Doctrine\ORM\QueryBuilder;
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\Paginator;
@@ -40,6 +41,23 @@ class SearchService
     {
         $this->paginator = $paginator;
         $this->builderFactory = $builderFactory;
+    }
+
+    public function searchByQuery(QueryBuilder $builder, Request $request, int $limit = 10): PaginationInterface
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $pageParameterName = $this->createPageParameterName();
+        $pagination = $this->paginator->paginate(
+            $builder,
+            $request->get($pageParameterName, 1),
+            $limit
+        );
+
+        $pagination->setPaginatorOptions([
+            Paginator::PAGE_PARAMETER_NAME => $pageParameterName,
+        ]);
+
+        return $pagination;
     }
 
     /**
