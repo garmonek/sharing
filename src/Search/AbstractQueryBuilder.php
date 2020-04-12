@@ -9,7 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class OfferQueryBuilder
- * @package App\Search
+ *
  */
 abstract class AbstractQueryBuilder
 {

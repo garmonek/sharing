@@ -4,8 +4,13 @@ namespace App\SaveRule;
 
 use App\Entity\Image;
 use App\Entity\Offer;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * Class OfferRule
+ *
+ */
 class OfferRule
 {
     public const MAX_IMAGES = 5;
@@ -16,16 +21,28 @@ class OfferRule
     private $session;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var Collection
      */
     private $images;
 
+    /**
+     * OfferRule constructor.
+     * @param Offer   $offer
+     * @param Session $session
+     */
     public function __construct(Offer $offer, Session $session)
     {
-        $this->images = $offer->getImages()->map(function (Image $image) {return $image;});
+        $this->images = $offer->getImages()->map(function (Image $image) {
+            return $image;
+        });
         $this->session = $session;
     }
 
+    /**
+     * @param Offer $offer
+     *
+     * @return Offer
+     */
     public function addRules(Offer $offer): Offer
     {
         $this->addImageRule($offer);
@@ -33,6 +50,10 @@ class OfferRule
         return $offer;
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     */
     private function addFlash(string $type, string $message): void
     {
         $this->session->getFlashBag()->add($type, $message);
@@ -56,7 +77,7 @@ class OfferRule
         }
 
         if (self::MAX_IMAGES < count($newImages)) {
-            $this->addFlash('danger', 'warning.offer.you_can_asign_up_to_5_image_per_offer');
+            $this->addFlash('danger', 'warning.offer.you_can_assign_up_to_5_image_per_offer');
         }
     }
 }

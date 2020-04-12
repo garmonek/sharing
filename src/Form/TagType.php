@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class TagType
- * @package App\Form
+ *
  */
 class TagType extends AbstractType
 {

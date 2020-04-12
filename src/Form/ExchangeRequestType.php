@@ -10,8 +10,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ExchangeRequestType
+ *
+ */
 class ExchangeRequestType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -19,17 +27,19 @@ class ExchangeRequestType extends AbstractType
             ->add('proposals', EntityType::class, [
                 'class' => Offer::class,
                 'choice_label' => 'name',
-                'multiple'=> true,
-                'choices' => $options['matchingOffers']
+                'multiple' => true,
+                'choices' => $options['matchingOffers'],
             ]);
-        ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => ExchangeRequest::class,
-            'matchingOffers' => []
+            'matchingOffers' => [],
         ]);
     }
 }

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ImageType
- * @package App\Form
+ *
  */
 class ImageType extends AbstractType
 {

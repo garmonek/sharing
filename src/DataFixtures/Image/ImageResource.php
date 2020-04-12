@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class ImageResource
- * @package App\DataFixtures\Image
+ *
  */
 class ImageResource
 {

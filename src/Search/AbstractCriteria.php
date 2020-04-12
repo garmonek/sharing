@@ -9,7 +9,7 @@ use App\Entity\AbstractTimestampableEntity;
 
 /**
  * Class AbstractCriteria
- * @package App\Search
+ *
  */
 abstract class AbstractCriteria
 {

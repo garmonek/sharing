@@ -34,7 +34,7 @@ class Offer extends AbstractTimestampableEntity
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"}, fetch="EAGER")
      *
      * @Assert\Count(min = 1, max = 5)
-     * 
+     *
      * @var ArrayCollection
      */
     private $images;
@@ -187,21 +187,33 @@ class Offer extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function clearImages(): self
     {
         $this->images = new ArrayCollection();
+
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function clearTags(): self
     {
         $this->tags = new ArrayCollection();
+
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function clearExchangeTags(): self
     {
         $this->exchangeTags = new ArrayCollection();
+
         return $this;
     }
 
@@ -379,19 +391,11 @@ class Offer extends AbstractTimestampableEntity
     /**
      * @return string|null
      */
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
     /**
      * @param string $name
      *
@@ -412,6 +416,11 @@ class Offer extends AbstractTimestampableEntity
         return $this->exchangeFor;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeFor
+     *
+     * @return $this
+     */
     public function addExchangeFor(ExchangeRequest $exchangeFor): self
     {
         if (!$this->exchangeFor->contains($exchangeFor)) {
@@ -422,6 +431,11 @@ class Offer extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeFor
+     *
+     * @return $this
+     */
     public function removeExchangeFor(ExchangeRequest $exchangeFor): self
     {
         if ($this->exchangeFor->contains($exchangeFor)) {

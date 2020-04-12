@@ -58,11 +58,26 @@ class District extends AbstractTimestampableEntity
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    /**
+     * @return int
+     */
     public function getCityId(): int
     {
         return $this->cityId;
     }
 
+    /**
+     * @param int $cityId
+     */
+    /**
+     * @param int $cityId
+     */
+    /**
+     * @param int $cityId
+     */
     public function setCityId(int $cityId): void
     {
         $this->cityId = $cityId;

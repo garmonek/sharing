@@ -14,6 +14,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class ExchangeRequestRepository extends ServiceEntityRepository
 {
+    /**
+     * ExchangeRequestRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ExchangeRequest::class);

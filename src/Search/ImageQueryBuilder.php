@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class ImageQueryBuilder
- * @package App\Search
+ *
  */
 class ImageQueryBuilder extends AbstractQueryBuilder
 {

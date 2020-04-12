@@ -378,6 +378,36 @@ class User extends AbstractTimestampableEntity implements UserInterface
         return $this->exchangeRequests;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
     public function addExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if (!$this->exchangeRequests->contains($exchangeRequest)) {
@@ -388,6 +418,36 @@ class User extends AbstractTimestampableEntity implements UserInterface
         return $this;
     }
 
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
+    /**
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return $this
+     */
     public function removeExchangeRequest(ExchangeRequest $exchangeRequest): self
     {
         if ($this->exchangeRequests->contains($exchangeRequest)) {

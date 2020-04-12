@@ -10,9 +10,9 @@ use App\Search\ExchangeRequestCriteria;
 use App\Search\ExchangeRequestCriteriaType;
 use App\Search\OfferCriteria;
 use App\Search\SearchService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,8 +25,15 @@ class ExchangeRequestController extends AbstractController
 {
     /**
      * @Route("/", name="exchange_request_index", methods={"GET"})
+     *
+     * @param Request       $request
+     * @param SearchService $searchService
+     *
+     * @return Response
+     *
+     * @throws Exception
      */
-    public function index(Request $request, ExchangeRequestRepository $exchangeRequestRepository, SearchService $searchService): Response
+    public function index(Request $request, SearchService $searchService): Response
     {
         $criteria = new ExchangeRequestCriteria();
         $form = $this->createForm(ExchangeRequestCriteriaType::class, $criteria);
@@ -38,7 +45,7 @@ class ExchangeRequestController extends AbstractController
 
         return $this->render('exchange_request/index.html.twig', [
             'exchange_requests' => $exchangeRequests,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -62,6 +69,10 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}", name="exchange_request_show", methods={"GET"})
+     *
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function show(ExchangeRequest $exchangeRequest): Response
     {
@@ -72,6 +83,17 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/new/target/{id}", name="exchange_request_upsert", methods={"GET","POST"})
+     *
+     * @param Offer                     $offer
+     * @param Request                   $request
+     * @param SearchService             $searchService
+     * @param ExchangeRequestRepository $requestRepository
+     *
+     * @return Response
+     *
+     * @throws Exception
+     *
+     * @noinspection PhpParamsInspection
      */
     public function upsertExchangeRequest(Offer $offer, Request $request, SearchService $searchService, ExchangeRequestRepository $requestRepository): Response
     {
@@ -90,14 +112,14 @@ class ExchangeRequestController extends AbstractController
             ExchangeRequestType::class,
             $exchangeRequest,
             [
-                'matchingOffers' => $exchangeOffers
+                'matchingOffers' => $exchangeOffers,
             ]
         );
 
         $form->handleRequest($request);
 
         $exchangeRequest->setTarget($offer);
-        $exchangeRequest->setUser($this->getUser());
+        $exchangeRequest->setUser($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -142,7 +164,7 @@ class ExchangeRequestController extends AbstractController
 //        }
 //
 //        if (5 < $exchange->getProposals()->count()) {
-//            //todo translate and retirm
+//            //todo translate and return
 //            $this->addFlash('danger', 'You can propose up to 5 offers for exchange');
 //            return $this->redirect($request->headers->get('referer'));
 //        }
@@ -170,6 +192,11 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="exchange_request_edit", methods={"GET","POST"})
+     *
+     * @param Request         $request
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function edit(Request $request, ExchangeRequest $exchangeRequest): Response
     {
@@ -191,6 +218,11 @@ class ExchangeRequestController extends AbstractController
 
     /**
      * @Route("/{id}", name="exchange_request_delete", methods={"DELETE"})
+     *
+     * @param Request         $request
+     * @param ExchangeRequest $exchangeRequest
+     *
+     * @return Response
      */
     public function delete(Request $request, ExchangeRequest $exchangeRequest): Response
     {

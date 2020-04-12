@@ -56,6 +56,7 @@ class Tag extends AbstractTimestampableEntity
 
     /**
      * @param bool $isValid
+     *
      * @return $this
      */
     public function setIsValid(bool $isValid): self

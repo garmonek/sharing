@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class OfferQueryBuilder
- * @package App\Search
+ *
  */
 class OfferQueryBuilder extends AbstractQueryBuilder
 {

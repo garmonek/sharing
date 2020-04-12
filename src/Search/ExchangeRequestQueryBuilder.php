@@ -10,6 +10,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class ExchangeRequestQueryBuilder
+ *
+ */
 class ExchangeRequestQueryBuilder extends AbstractQueryBuilder
 {
     /**
@@ -17,6 +21,9 @@ class ExchangeRequestQueryBuilder extends AbstractQueryBuilder
      */
     protected $criteria;
 
+    /**
+     * @return QueryBuilder
+     */
     public function buildQuery(): QueryBuilder
     {
         $this->builder->select('e')->from(ExchangeRequest::class, 'e');
@@ -25,24 +32,23 @@ class ExchangeRequestQueryBuilder extends AbstractQueryBuilder
 
         $filterUsing = ExchangeRequestCriteria::FILTER_USING_PROPOSALS === $this->criteria->filterUsing ?
             'proposals' : 'target';
-        $this->builder->join('e.' . $filterUsing, 'offer');
+        $this->builder->join('e.'.$filterUsing, 'offer');
 
         if ($this->criteria->tags) {
             $tags = $this->criteria->useExchangeTags ? 'exchangeTags' : 'tags';
             $this->builder
-                ->join('offer.' . $tags, 't')
+                ->join('offer.'.$tags, 't')
                 ->andWhere('t.id in (:ids)')
                 ->setParameter(':ids', $this->criteria->getTagIds(), Connection::PARAM_INT_ARRAY);
         }
 
         $cityId = $this->criteria->getCityId();
         if ($cityId) {
-            $this->builder->join('offer.district','district')
+            $this->builder->join('offer.district', 'district')
             ->andWhere('district.city = :cityId')
-            ->setParameter(':cityId', $cityId,ParameterType::INTEGER);
+            ->setParameter(':cityId', $cityId, ParameterType::INTEGER);
         }
 
         return $this->builder;
     }
-
 }

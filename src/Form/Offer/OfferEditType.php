@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Class OfferEditType
- * @package App\Form\Offer
+ *
  */
 class OfferEditType extends OfferType
 {

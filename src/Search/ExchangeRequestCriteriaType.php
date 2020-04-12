@@ -5,9 +5,7 @@
 
 namespace App\Search;
 
-
 use App\Entity\City;
-use App\Entity\Image;
 use App\Entity\Tag;
 use App\Form\DataTransformer\TagsTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -18,6 +16,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
+/**
+ * Class ExchangeRequestCriteriaType
+ *
+ */
 class ExchangeRequestCriteriaType extends AbstractType
 {
     /**
@@ -33,7 +35,7 @@ class ExchangeRequestCriteriaType extends AbstractType
                 'label' => 'form.city.label',
                 'empty_data' => null,
                 'required' => false,
-                'placeholder' => 'form.label.all'
+                'placeholder' => 'form.label.all',
             ])
             ->add('filterUsing', ChoiceType::class, [
                 'choices' => [
@@ -62,10 +64,9 @@ class ExchangeRequestCriteriaType extends AbstractType
             ])
             ->add('useExchangeTags', CheckboxType::class, [
                 'label' => 'form.useExchangeTags.label',
-                'required' => false
+                'required' => false,
             ])
             ->setMethod('GET');
-        ;
     }
 
     /**
@@ -78,6 +79,4 @@ class ExchangeRequestCriteriaType extends AbstractType
             'csrf_protection' => false,
         ]);
     }
-
-
 }

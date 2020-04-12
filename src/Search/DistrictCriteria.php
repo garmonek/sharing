@@ -7,7 +7,7 @@ namespace App\Search;
 
 /**
  * Class DistrictCriteria
- * @package App\Search
+ *
  */
 class DistrictCriteria extends AbstractCriteria
 {

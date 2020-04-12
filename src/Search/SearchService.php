@@ -42,6 +42,9 @@ class SearchService
         $this->builderFactory = $builderFactory;
     }
 
+    /**
+     * @return PaginationInterface
+     */
     public function createEmptyPagination(): PaginationInterface
     {
         $pagination = $this->paginator->paginate([], 1, 1);

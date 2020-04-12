@@ -10,7 +10,6 @@ use App\Entity\Offer;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
 use App\SaveRule\OfferRule;
-use App\Search\ImageCriteria;
 use App\Search\OfferCriteriaType;
 use App\Search\OfferCriteria;
 use App\Search\SearchService;
@@ -18,7 +17,6 @@ use App\Service\OfferDistrictAutocomplete;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -168,18 +166,16 @@ class OfferController extends AbstractController
     /**
      * @Route("/{id}/edit", name="offer_edit", methods={"GET","POST"})
      *
-     * @param Request       $request
-     * @param Offer         $offer
+     * @param Request $request
+     * @param Offer   $offer
      *
-     * @param SearchService $searchService
+     * @param Session $session
      *
      * @return Response
      *
-     * @throws Exception
      *
-     * @noinspection PhpUnhandledExceptionInspection
      */
-    public function edit(Request $request, Offer $offer, SearchService $searchService, Session $session): Response
+    public function edit(Request $request, Offer $offer, Session $session): Response
     {
         $rules = new OfferRule($offer, $session);
 
@@ -250,22 +246,5 @@ class OfferController extends AbstractController
         }
 
         return $this->redirect($request->headers->get('referer'));
-    }
-
-    /**
-     * @param Offer         $offer
-     * @param Request       $request
-     * @param SearchService $searchService
-     *
-     * @return PaginationInterface
-     *
-     * @throws Exception
-     */
-    private function getImagesPagination(Offer $offer, Request $request, SearchService $searchService): PaginationInterface
-    {
-        $imageCriteria = new ImageCriteria();
-        $imageCriteria->offerIds = [$offer->getId()];
-
-        return $searchService->search($imageCriteria, $request);
     }
 }

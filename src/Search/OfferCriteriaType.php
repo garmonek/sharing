@@ -3,19 +3,17 @@
 namespace App\Search;
 
 use App\Entity\City;
-use App\Entity\District;
 use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
  * Class OfferCriteriaType
- * @package App\Search
+ *
  */
 class OfferCriteriaType extends AbstractType
 {
@@ -86,7 +84,7 @@ class OfferCriteriaType extends AbstractType
             'choice_label' => 'name',
             'required'   => false,
             'empty_data' => null,
-            'placeholder' => 'form.offer.city.placeholder.all'
+            'placeholder' => 'form.offer.city.placeholder.all',
         ]);
 
 //        $builder->add('districts', Select2EntityType::class, [

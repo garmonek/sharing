@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class DistrictQueryBuilder
- * @package App\Search
+ *
  */
 class DistrictQueryBuilder extends AbstractQueryBuilder
 {

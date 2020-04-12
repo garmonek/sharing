@@ -9,7 +9,7 @@ use Tetranz\Select2EntityBundle\Form\DataTransformer\EntitiesToPropertyTransform
  * Data transformer for multiple mode (i.e., multiple = true)
  *
  * Class EntitiesToPropertyTransformer
- * @package Tetranz\Select2EntityBundle\Form\DataTransformer
+ *
  */
 class TagsTransformer extends EntitiesToPropertyTransformer
 {
