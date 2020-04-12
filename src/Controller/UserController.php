@@ -35,16 +35,11 @@ class UserController extends AbstractController
      *
      * @return Response
      */
-    public function index(Request $request, UserRepository $userRepository, PaginatorInterface $paginator): Response
+    public function index(Request $request, UserRepository $userRepository, SearchService $searchService): Response
     {
-        $pagination = $paginator->paginate(
-            $userRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            User::NUMBER_OF_ITEMS
-        );
-
+        $users = $searchService->searchByQuery($userRepository->createQueryBuilder('u'), $request);
         return $this->render('user/index.html.twig', [
-            'users' => $pagination,
+            'users' => $users,
         ]);
     }
 
