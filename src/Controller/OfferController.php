@@ -5,12 +5,11 @@
 
 namespace App\Controller;
 
-use App\Entity\ExchangeRequest;
 use App\Entity\Image;
 use App\Entity\Offer;
-use App\Form\ExchangeRequestType;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
+use App\SaveRule\OfferRule;
 use App\Search\ImageCriteria;
 use App\Search\OfferCriteriaType;
 use App\Search\OfferCriteria;
@@ -20,12 +19,11 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Tetranz\Select2EntityBundle\Service\AutocompleteService;
 
@@ -181,19 +179,17 @@ class OfferController extends AbstractController
      *
      * @noinspection PhpUnhandledExceptionInspection
      */
-    public function edit(Request $request, Offer $offer, SearchService $searchService): Response
+    public function edit(Request $request, Offer $offer, SearchService $searchService, Session $session): Response
     {
-        $images = $offer->getImages()->map(function (Image $image) {
-            return $image;
-        });
+        $rules = new OfferRule($offer, $session);
+
         $form = $this->createForm(OfferEditType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            foreach ($images as $image) {
-                $offer->addImage($image);
-            }
+            $offer = $rules->addRules($offer);
+
             $em->persist($offer);
             $em->flush();
 

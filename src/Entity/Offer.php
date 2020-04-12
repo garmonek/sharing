@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OfferRepository")
@@ -39,6 +40,8 @@ class Offer extends AbstractTimestampableEntity
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag", cascade={"persist"}, fetch="EAGER")
      *
+     * @Assert\Count(min = 1, max = 5)
+     *
      * @var ArrayCollection
      */
     private $tags;
@@ -65,6 +68,8 @@ class Offer extends AbstractTimestampableEntity
      *     joinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="offer_id", referencedColumnName="id", unique=true)}
      * )
+     *
+     * @Assert\Count(min = 1, max = 5)
      *
      * @var ArrayCollection
      */
@@ -177,6 +182,24 @@ class Offer extends AbstractTimestampableEntity
             $this->images->removeElement($image);
         }
 
+        return $this;
+    }
+
+    public function clearImages(): self
+    {
+        $this->images = new ArrayCollection();
+        return $this;
+    }
+
+    public function clearTags(): self
+    {
+        $this->tags = new ArrayCollection();
+        return $this;
+    }
+
+    public function clearExchangeTags(): self
+    {
+        $this->exchangeTags = new ArrayCollection();
         return $this;
     }
 
