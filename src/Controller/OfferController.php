@@ -179,13 +179,12 @@ class OfferController extends AbstractController
     public function edit(Request $request, Offer $offer, Session $session): Response
     {
         $rules = new OfferRule($offer, $session);
-
         $form = $this->createForm(OfferEditType::class, $offer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $offer = $rules->addRules($offer);
+            $offer = $rules->addRule($offer);
 
             $em->persist($offer);
             $em->flush();

@@ -43,26 +43,7 @@ class OfferRule
      *
      * @return Offer
      */
-    public function addRules(Offer $offer): Offer
-    {
-        $this->addImageRule($offer);
-
-        return $offer;
-    }
-
-    /**
-     * @param string $type
-     * @param string $message
-     */
-    private function addFlash(string $type, string $message): void
-    {
-        $this->session->getFlashBag()->add($type, $message);
-    }
-
-    /**
-     * @param Offer $offer
-     */
-    private function addImageRule(Offer $offer): void
+    public function addRule(Offer $offer): Offer
     {
         $newImages = $offer->getImages()->map(function (Image $image) {
             return $image;
@@ -76,8 +57,19 @@ class OfferRule
             }
         }
 
-        if (self::MAX_IMAGES < count($newImages)) {
+        if (self::MAX_IMAGES < count($images)) {
             $this->addFlash('danger', 'warning.offer.you_can_assign_up_to_5_image_per_offer');
         }
+
+        return $offer;
+    }
+
+    /**
+     * @param string $type
+     * @param string $message
+     */
+    private function addFlash(string $type, string $message): void
+    {
+        $this->session->getFlashBag()->add($type, $message);
     }
 }

@@ -7,74 +7,18 @@
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>
-    <body>
-        <div class="header">
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand" href="#">Sharing</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href=" {{ path('offer_index') }} ">
-                                {{ 'offers'|trans }}
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('user_index') }} ">
-                                {{ 'users'|trans }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('city_index') }} ">
-                                {{ 'city'|trans }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('tag_index') }} ">
-                                {{ 'tags'|trans }}
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('exchange_request_index') }} ">
-                                {{ 'exchnage_request'|trans }}
-                            </a>
-                        </li>
-                    </ul>
+    <body class="bg-secondary">
+        {{ include('utils/_header.html.twig') }}
 
-                    <ul class="navbar-nav">
-                        {% if app.user.id is not defined %}
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('user_new') }} ">
-                                {{ 'register'|trans }}
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item">
-                            <a class="nav-link" href=" {{ path('security_login') }} ">
-                                {{ 'login'|trans }}
-                            </a>
-                        </li>
-                        {% endif %}
-
-                        {% if app.user.id is defined %}
-                            <li class="nav-item">
-                                <a class="nav-link" href=" {{ path('security_logout') }} ">
-                                    {{ 'logout'|trans }}
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </nav>
+        <div class="content jumbotron">
+            {{ include('utils/_flash_messages.html.twig') }}
+            <div class="container">
+            {% block body %}{% endblock %}
+            </div>
         </div>
 
-        <div class="content container">
-        {% block body %}{% endblock %}
-        </div>
+        {{ include('utils/_footer.html.twig') }}
+
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
