@@ -1,6 +1,6 @@
 <div class="card bg-light mb-3">
     <div class="card-header">
-        <span class="text-capitalize font-weight-bold">{{ 'offer.header' | trans }}</span>
+        <span class="text-capitalize font-weight-bold">{{ offer.name }}</span>
         <span>{{ offer.createdAt|date }}</span>
 
         {% if offer.active %}
@@ -11,39 +11,58 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-4">
-                <h5 class="card-title">
-                    {{ offer.name }}
-                </h5>
-                <p class="card-text">
-                    {{ offer.description }}
-                </p>
+            <div class="">
+                <span class="font-weight-bolder">{{ 'offer.tags' | trans }}:</span>
+                {%  for tag in offer.tags %}
+                    <span class="badge badge-primary">{{ tag.name }}</span>
+                {% endfor %}
             </div>
-            <div class="col-md-5">
-                <dl>
-                    <dt>{{ 'offer.createdAt' | trans }}</dt>
-                    <dd>
-                        {{ offer.createdAt|date }}
-                    </dd>
+        </div>
 
-                    <dt>{{ 'offer.tags' | trans }}</dt>
-                    <dd>
-                        {%  for tag in offer.tags %}
-                            <span class="badge badge-info">{{ tag.name }}</span>
-                        {% endfor %}
-                    </dd>
-
-                    <dt>{{ 'offer.exchangeTags' | trans }}</dt>
-                    <dd>
-                        {%  for tag in offer.exchangeTags %}
-                            <span class="badge badge-info">{{ tag.name }}</span>
-                        {% endfor %}
-                    </dd>
-                </dl>
+        <div class="row">
+            <div class="">
+                <span class="font-weight-bolder">{{ 'offer.exchangeTags' | trans }}:</span>
+                {%  for tag in offer.exchangeTags %}
+                    <span class="badge badge-info">{{ tag.name }}</span>
+                {% endfor %}
             </div>
-{#            todo if not logged user offer hide this #}
-            <div class="col-md-3 d-flex flex-column justify-content-around">
+        </div>
+        <hr>
 
+        {% if 0 < offer.images.count %}
+        <div class="row">
+            <div class="flex-images" id="gallery">
+                {% for image in offer.images %}
+                    <div class="item" data-w="200" data-h="150">
+                        <a href="{{ asset('uploads/imgs/') ~ image.file }}" data-lightbox="offer-{{ offer.id }}-images">
+                            <img src="{{ asset('uploads/imgs/') ~ image.file }}" alt="">
+                        </a>
+
+                        {{ include('image/_delete_form.html.twig') }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        {% endif %}
+
+        <div class="row">
+            <h5 class="card-title">
+                {{ 'offer.description' | trans }}
+            </h5>
+            <p class="card-text">
+                {{ offer.description }}
+            </p>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary m-1" href="{{ path('offer_index') }}">
+                    {{ 'offer.back_to_index' | trans }}
+                </a>
+            </div>
+            <div class="col d-flex justify-content-end">
                 <a class="btn btn-primary m-1" href="{{ path('exchange_request_upsert', {'id': offer.id}) }}">
                     {{ 'offer.request_exchange'| trans }}
                 </a>
@@ -51,25 +70,7 @@
                 <a class="btn btn-primary m-1" href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
 
                 {{ include('offer/_delete_form.html.twig') }}
-
             </div>
-        </div>
-        <hr>
-        {# flex-images data-w data-h comes from js-plugin#}
-        <div class="flex-images" id="gallery">
-            {% for image in offer.images %}
-                <div class="item" data-w="200" data-h="150">
-                    <a href="{{ asset('uploads/imgs/') ~ image.file }}" data-lightbox="offer-{{ offer.id }}-images">
-                        <img src="{{ asset('uploads/imgs/') ~ image.file }}" alt="">
-                    </a>
-
-                    {{ include('image/_delete_form.html.twig') }}
-                </div>
-            {% endfor %}
-        </div>
-        <hr>
-        <div class="">
-            <a class="btn btn-primary" href="{{ path('offer_index') }}">back to list</a>
         </div>
     </div>
 </div>

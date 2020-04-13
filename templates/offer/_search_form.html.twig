@@ -33,7 +33,12 @@
             {{ 'offer.search.more' | trans }}
         </h6>
 
-        <div id="more" class="collapse" data-parent="#accordion">
+
+        {% set expand = search_form.vars.value.city != null
+            or search_form.vars.value.sortDirection != 1
+            or search_form.vars.value.sortValue != 1 %}
+
+        <div id="more" class="collapse {% if expand %} show {% endif %}" data-parent="#accordion">
             <div class="row">
                 <div class="col">
                     {{ form_row(search_form.city, {attr:{'class':'form-check'}}) }}

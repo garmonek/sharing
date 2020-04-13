@@ -2,41 +2,135 @@
     <div class="navigation text-center">
         {{ knp_pagination_render(offers) }}
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Active</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Id</th>
-            <th>CreatedAt</th>
-            <th>UpdatedAt</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for offer in offers %}
-            <tr>
-                <td>{{ offer.active ? 'Yes' : 'No' }}</td>
-                <td>{{ offer.name }}</td>
-                <td>{{ offer.description }}</td>
-                <td>{{ offer.id }}</td>
-                <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ offer.updatedAt ? offer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    {% block listing_actions %}
-                        <a href="{{ path('offer_show', {'id': offer.id}) }}">show</a>
-                        <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
-                    {% endblock %}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+{% for offer in offers %}
+
+    <div class="card {% if offer.active %} bg-light {% else %} bg-warning {% endif %} mb-3">
+        <div class="card-header">
+            <span class="text-capitalize font-weight-bold">{{ offer.name }}</span>
+            <span>{{ offer.createdAt|date }}</span>
+
+            {% if offer.active %}
+                <span class="badge badge-success float-right">{{ 'offer.active' | trans }}</span>
+                {% else %}
+                <span class="font-weight-bolder float-right">{{ 'offer.inactive'|trans }}</span>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="flex-images">
+                    {% if offer.images[0] is defined %}
+                        <div class="item" data-w="100" data-h="100">
+                            <a href="{{ asset('uploads/imgs/') ~ offer.images[0].file }}" data-lightbox="offer-{{ offer.id }}-images">
+                                <img src="{{ asset('uploads/imgs/') ~ offer.images[0].file }}" alt="">
+                            </a>
+                        </div>
+
+                        <div class="d-none">
+                        {% for image in offer.images %}
+                            {% if loop.index > 1%}
+                                <a href="{{ asset('uploads/imgs/') ~ image.file }}" data-lightbox="offer-{{ offer.id }}-images">
+                                    <img src="{{ asset('uploads/imgs/') ~ image.file }}" alt="">
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+
+                    {% endif %}
+                </div>
+                <div class="col">
+                    <h5 class="card-title">
+                        {{ 'offer.description' | trans }}
+                    </h5>
+                    <p class="card-text">
+                        {{ offer.description | u.truncate(160, '...') }}
+                    </p>
+                </div>
+                <div class="col">
+                    <dl>
+
+                        <dt>{{ 'offer.tags' | trans }}</dt>
+                        <dd>
+                            {%  for tag in offer.tags %}
+                                <span class="badge badge-primary">{{ tag.name }}</span>
+                            {% endfor %}
+                        </dd>
+
+                        <dt>{{ 'offer.exchangeTags' | trans }}</dt>
+                        <dd>
+                            {%  for tag in offer.exchangeTags %}
+                                <span class="badge badge-info">{{ tag.name }}</span>
+                            {% endfor %}
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col d-flex flex-column justify-content-around">
+
+                    <a class="btn btn-info m-1" href="{{ path('exchange_request_upsert', {'id': offer.id}) }}">
+                        {{ 'offer.request_exchange'| trans }}
+                    </a>
+                    <a class="btn btn-primary m-1" href="{{ path('offer_show', {'id': offer.id}) }}">
+                        {{ 'offer.show'| trans }}
+                    </a>
+                    <a class="btn btn-primary m-1" href="{{ path('offer_edit', {'id': offer.id}) }}">
+                        {{ 'offer.edit'| trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+
+    {#    <div class="table-responsive">#}
+{#        <table class="table">#}
+{#            <thead>#}
+{#            <tr>#}
+{#                <th>#</th>#}
+{#                <th>Name</th>#}
+{#                <th>Description</th>#}
+{#                <th>CreatedAt</th>#}
+{#                <th>UpdatedAt</th>#}
+{#                <th>actions</th>#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#            {% for offer in offers %}#}
+{#                <tr class="{% if not offer.active %}table-warning{% endif %}">#}
+{#                    <td class="d-flex align-items-center">#}
+{#                        {{ loop.index }}#}
+{#                    </td>#}
+
+{#                    <td class="flex-images">#}
+{#                        <div class="item" data-w="100" data-h="100">#}
+{#                            <a href="{{ asset('uploads/imgs/') ~ offer.images[0].file }}" data-lightbox="offer-{{ offer.id }}-images">#}
+{#                                <img src="{{ asset('uploads/imgs/') ~ offer.images[0].file }}" alt="">#}
+{#                            </a>#}
+{#                            <div class="app-image-wrapper">#}
+{#                                <h4>{{ offer.name }}</h4>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </td>#}
+{#                    <td>{{ offer.description }}</td>#}
+{#                    <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                    <td>{{ offer.updatedAt ? offer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>#}
+{#                    <td>#}
+{#                        {% block listing_actions %}#}
+{#                            <a href="{{ path('offer_show', {'id': offer.id}) }}">show</a>#}
+{#                            <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>#}
+{#                        {% endblock %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% else %}#}
+{#                <tr>#}
+{#                    <td colspan="6">no records found</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+{#    </div>#}
     <div class="navigation text-center">
         {{ knp_pagination_render(offers) }}
     </div>
