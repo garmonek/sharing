@@ -33,10 +33,10 @@
             {{ 'offer.search.more' | trans }}
         </h6>
 
-
-        {% set expand = search_form.vars.value.city != null
-            or search_form.vars.value.sortDirection != 1
-            or search_form.vars.value.sortValue != 1 %}
+        {% set values = search_form.vars.value %}
+        {% set expand = values.city != null
+            or (values.sortDirection != null and values.sortDirection != 1)
+            or (values.sortDirection != null and values.sortValue != 1) %}
 
         <div id="more" class="collapse {% if expand %} show {% endif %}" data-parent="#accordion">
             <div class="row">

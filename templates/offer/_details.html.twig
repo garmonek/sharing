@@ -63,13 +63,7 @@
                 </a>
             </div>
             <div class="col d-flex justify-content-end">
-                <a class="btn btn-primary m-1" href="{{ path('exchange_request_upsert', {'id': offer.id}) }}">
-                    {{ 'offer.request_exchange'| trans }}
-                </a>
-
-                <a class="btn btn-primary m-1" href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
-
-                {{ include('offer/_delete_form.html.twig') }}
+                {{ include('offer/_actions.html.twig') }}
             </div>
         </div>
     </div>

@@ -98,6 +98,12 @@ class ExchangeRequestController extends AbstractController
     public function upsertExchangeRequest(Offer $offer, Request $request, SearchService $searchService, ExchangeRequestRepository $requestRepository): Response
     {
         $user = $this->getUser();
+
+        if ($user->getId() === $offer->getUserId()) {
+            //todo trans
+            $this->addFlash('danger', 'error.you_cant_request_exchange_for_your_offer');
+        }
+
         $exchangeRequest = $requestRepository->findOneBy(['user' => $user, 'target' => $offer])
             ?? new ExchangeRequest();
 

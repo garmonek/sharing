@@ -1,0 +1,17 @@
+{% if app.user.id != offer.user.id %}
+    <a class="btn btn-sm btn-info m-1" href="{{ path('exchange_request_upsert', {'id': offer.id}) }}">
+        {{ 'offer.request_exchange'| trans }}
+    </a>
+{% endif %}
+
+<a class="btn btn-sm btn-primary m-1" href="{{ path('offer_show', {'id': offer.id}) }}">
+    {{ 'offer.show'| trans }}
+</a>
+
+{% if app.user.id == offer.user.id %}
+    <a class="btn btn-sm btn-primary m-1" href="{{ path('offer_edit', {'id': offer.id}) }}">
+        {{ 'offer.edit'| trans }}
+    </a>
+
+    {{ include('offer/_delete_form.html.twig') }}
+{% endif %}
