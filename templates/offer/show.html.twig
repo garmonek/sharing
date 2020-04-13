@@ -3,16 +3,8 @@
 {% block title %}Offer{% endblock %}
 
 {% block body %}
-    {% set offerId = offer.id %}
-    {{ include('exchange_request/_upsert_link.html.twig') }}
-
-    <h1>Offer</h1>
 
     {{ include('offer/_details.html.twig') }}
-
-    <a href="{{ path('offer_index') }}">back to list</a>
-    <a href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
-    {{ include('offer/_delete_form.html.twig') }}
 
     <h2>{{ 'offer.show.mathing_listing.title' }}</h2>
 

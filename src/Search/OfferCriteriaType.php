@@ -13,7 +13,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 /**
  * Class OfferCriteriaType
- *
+ * @package App\Search
  */
 class OfferCriteriaType extends AbstractType
 {
@@ -29,7 +29,7 @@ class OfferCriteriaType extends AbstractType
     {
         if ($options[self::ENABLE_TAGS]) {
             $builder->add('tags', Select2EntityType::class, [
-                'label' => 'form.offer.tags.label',
+                'label' => 'offer.search.tags.label',
                 'multiple' => true,
                 'remote_route' => 'search_tag_autocomplete',
                 'class' => Tag::class,
@@ -49,12 +49,12 @@ class OfferCriteriaType extends AbstractType
                     'new_tag_text' => '',
                     'tag_separators' => '[","]',
                 ],
-                'placeholder' => 'form.offer.tags.placeholder',
+                'placeholder' => 'offer.search.tags.placeholder',
             ]);
         }
         if ($options[self::ENABLE_EXCHANGE_TAGS]) {
             $builder->add('exchangeTags', Select2EntityType::class, [
-                'label' => 'form.offer.exchange_tags.label',
+                'label' => 'offer.search.exchange_tags.label',
                 'multiple' => true,
                 'remote_route' => 'search_tag_autocomplete',
                 'class' => Tag::class,
@@ -74,21 +74,21 @@ class OfferCriteriaType extends AbstractType
                     'new_tag_text' => '',
                     'tag_separators' => '[","]',
                 ],
-                'placeholder' => 'form.offer.exchange_tags.placeholder',
+                'placeholder' => 'offer.search.exchange_tags.placeholder',
             ]);
         }
 
         $builder->add('city', EntityType::class, [
-            'label' => 'form.offer.city.label',
+            'label' => 'offer.search.city.label',
             'class' => City::class,
             'choice_label' => 'name',
             'required'   => false,
             'empty_data' => null,
-            'placeholder' => 'form.offer.city.placeholder.all',
+            'placeholder' => 'offer.search.city.placeholder.all',
         ]);
-
+// todo change or remove
 //        $builder->add('districts', Select2EntityType::class, [
-//            'label' => 'form.offer.districts.label',
+//            'label' => 'offer.search.districts.label',
 //            'multiple' => true,
 //            'remote_route' => 'search_district_autocomplete',
 //            'class' => District::class,
@@ -108,34 +108,37 @@ class OfferCriteriaType extends AbstractType
 //                'new_tag_text' => '',
 //                'tag_separators' => '[","]',
 //            ],
-//            'placeholder' => 'form.offer.districts.placeholder',
+//            'placeholder' => 'offer.search.districts.placeholder',
 //        ]);
 
         if ($options[self::ENABLE_ACTIVE]) {
             $builder->add('active', ChoiceType::class, [
-                'label' => 'form.offer.active.label',
+                'label' => 'offer.search.active.label',
+                'expanded' => true,
+                'multiple' => false,
+                'data' => OfferCriteria::OFFER_ACTIVE,
                 'choices' => [
-                    'form.offer.active.yes.label' => OfferCriteria::OFFER_ACTIVE,
-                    'form.offer.active.no.label' => OfferCriteria::OFFER_INACTIVE,
-                    'form.offer.active.all.label' => OfferCriteria::OFFER_ALL,
+                    'offer.search.active.yes.label' => OfferCriteria::OFFER_ACTIVE,
+                    'offer.search.active.no.label' => OfferCriteria::OFFER_INACTIVE,
+                    'offer.search.active.all.label' => OfferCriteria::OFFER_ALL,
                 ],
             ]);
         }
 
         $builder->add('sortDirection', ChoiceType::class, [
-            'label' => 'form.offer.sortDirection.label',
+            'label' => 'offer.search.sortDirection.label',
             'choices' => [
-                'form.offer.sortDirection.asc.label' => OfferCriteria::SORT_DIRECTION_ASC,
-                'form.offer.sortDirection.desc.label' => OfferCriteria::SORT_DIRECTION_DESC,
+                'offer.search.sortDirection.asc.label' => OfferCriteria::SORT_DIRECTION_ASC,
+                'offer.search.sortDirection.desc.label' => OfferCriteria::SORT_DIRECTION_DESC,
             ],
         ])
         ->add('sortValue', ChoiceType::class, [
-            'label' => 'form.offer.sortValue.label',
+            'label' => 'offer.search.sortValue.label',
             'choices' => [
-                'form.offer.sortValue.createdAt.label' => OfferCriteria::SORT_VALUE_CREATED,
-                'form.offer.sortValue.updatedAt.label' => OfferCriteria::SORT_VALUE_UPDATED,
-                'form.offer.sortValue.exchangeTags.label' => OfferCriteria::SORT_VALUE_EXCHANGE_TAGS,
-                'form.offer.sortValue.tags.label' => OfferCriteria::SORT_VALUE_TAGS,
+                'offer.search.sortValue.createdAt.label' => OfferCriteria::SORT_VALUE_CREATED,
+                'offer.search.sortValue.updatedAt.label' => OfferCriteria::SORT_VALUE_UPDATED,
+                'offer.search.sortValue.exchangeTags.label' => OfferCriteria::SORT_VALUE_EXCHANGE_TAGS,
+                'offer.search.sortValue.tags.label' => OfferCriteria::SORT_VALUE_TAGS,
             ],
         ])
         ->setMethod('GET');

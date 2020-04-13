@@ -1,40 +1,75 @@
-<table class="table">
-    <tbody>
-    <tr>
-        <th>Active</th>
-        <td>{{ offer.active ? 'Yes' : 'No' }}</td>
-    </tr>
-    <tr>
-        <th>Description</th>
-        <td>{{ offer.description }}</td>
-    </tr>
-    <tr>
-        <th>Id</th>
-        <td>{{ offer.id }}</td>
-    </tr>
-    <tr>
-        <th>Tags</th>
-        <td>
-            {%  for tag in offer.tags %}
-                <span>{{ tag.name ~ (not loop.last ? ', ') }}</span>
+<div class="card bg-light mb-3">
+    <div class="card-header">
+        <span class="text-capitalize font-weight-bold">{{ 'offer.header' | trans }}</span>
+        <span>{{ offer.createdAt|date }}</span>
+
+        {% if offer.active %}
+            <span class="badge badge-success float-right">{{ 'offer.active' | trans }}</span>
+        {% else %}
+            <span class="badge badge-warning float-right">{{ 'offer.inactive' | trans }}</span>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="card-title">
+                    {{ offer.name }}
+                </h5>
+                <p class="card-text">
+                    {{ offer.description }}
+                </p>
+            </div>
+            <div class="col-md-5">
+                <dl>
+                    <dt>{{ 'offer.createdAt' | trans }}</dt>
+                    <dd>
+                        {{ offer.createdAt|date }}
+                    </dd>
+
+                    <dt>{{ 'offer.tags' | trans }}</dt>
+                    <dd>
+                        {%  for tag in offer.tags %}
+                            <span class="badge badge-info">{{ tag.name }}</span>
+                        {% endfor %}
+                    </dd>
+
+                    <dt>{{ 'offer.exchangeTags' | trans }}</dt>
+                    <dd>
+                        {%  for tag in offer.exchangeTags %}
+                            <span class="badge badge-info">{{ tag.name }}</span>
+                        {% endfor %}
+                    </dd>
+                </dl>
+            </div>
+{#            todo if not logged user offer hide this #}
+            <div class="col-md-3 d-flex flex-column justify-content-around">
+
+                <a class="btn btn-primary m-1" href="{{ path('exchange_request_upsert', {'id': offer.id}) }}">
+                    {{ 'offer.request_exchange'| trans }}
+                </a>
+
+                <a class="btn btn-primary m-1" href="{{ path('offer_edit', {'id': offer.id}) }}">edit</a>
+
+                {{ include('offer/_delete_form.html.twig') }}
+
+            </div>
+        </div>
+        <hr>
+        {# flex-images data-w data-h comes from js-plugin#}
+        <div class="flex-images" id="gallery">
+            {% for image in offer.images %}
+                <div class="item" data-w="200" data-h="150">
+                    <a href="{{ asset('uploads/imgs/') ~ image.file }}" data-lightbox="offer-{{ offer.id }}-images">
+                        <img src="{{ asset('uploads/imgs/') ~ image.file }}" alt="">
+                    </a>
+
+                    {{ include('image/_delete_form.html.twig') }}
+                </div>
             {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>Exchange Tags</th>
-        <td>
-            {%  for tag in offer.exchangeTags %}
-                <span>{{ tag.name ~ (not loop.last ? ', ') }}</span>
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th>CreatedAt</th>
-        <td>{{ offer.createdAt ? offer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-    </tr>
-    <tr>
-        <th>UpdatedAt</th>
-        <td>{{ offer.updatedAt ? offer.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-    </tr>
-    </tbody>
-</table>
+        </div>
+        <hr>
+        <div class="">
+            <a class="btn btn-primary" href="{{ path('offer_index') }}">back to list</a>
+        </div>
+    </div>
+</div>

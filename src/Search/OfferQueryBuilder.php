@@ -29,6 +29,11 @@ class OfferQueryBuilder extends AbstractQueryBuilder
             ->join('o.tags', 't')
             ->join('o.exchangeTags', 'et');
 
+        if (0 !== \count($this->criteria->excludedIds)) {
+            $this->builder->andWhere('o.id NOT IN (:excludedIds)')
+                ->setParameter(':excludedIds', $this->criteria->excludedIds, Connection::PARAM_INT_ARRAY);
+        }
+
         if ($this->criteria->hasTags()) {
             $this->searchWithTags();
         }
@@ -55,8 +60,6 @@ class OfferQueryBuilder extends AbstractQueryBuilder
 
         $this->searchWithActive();
         $this->searchWithOrder();
-
-
 
         return $this->builder;
     }

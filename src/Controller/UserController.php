@@ -31,7 +31,6 @@ class UserController extends AbstractController
      *
      * @param Request            $request
      * @param UserRepository     $userRepository
-     * @param PaginatorInterface $paginator
      *
      * @return Response
      */

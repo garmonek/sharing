@@ -33,7 +33,7 @@ class Offer extends AbstractTimestampableEntity
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", inversedBy="offers", cascade={"persist"}, fetch="EAGER")
      *
-     * @Assert\Count(min = 1, max = 5)
+     * @Assert\Count(min = 0, max = 5)
      *
      * @var ArrayCollection
      */

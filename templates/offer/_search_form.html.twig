@@ -1,4 +1,55 @@
-{{ form_start(search_form) }}
-    {{ form_widget(search_form) }}
-<button class="btn btn-outline-dark">{{ button_label|default('Search') }}</button>
-{{ form_end(search_form) }}
+<div class="card" id="accordion">
+    <div class="card-body">
+        <div class="card-title">
+            <h5>{{ 'offer.search.card-title' }}</h5>
+        </div>
+        {{ form_start(search_form) }}
+        <div class="row">
+            {% if search_form['tags']  is defined %}
+                <div class="col">
+                    {{ form_row(search_form.tags) }}
+                </div>
+            {% endif %}
+
+            {% if search_form['exchangeTags']  is defined %}
+            <div class="col">
+                {{ form_row(search_form.exchangeTags) }}
+            </div>
+            {% endif %}
+        </div>
+        {% if search_form['active']  is defined %}
+            <div class="row d-flex justify-content-center align-items-center">
+                {{ form_row(search_form.active, {attr:{'class':'d-flex'}}) }}
+            </div>
+        {% endif %}
+        <hr>
+
+        <h6 class="more justify-content-center d-flex"
+            data-toggle="collapse"
+            data-target="#more"
+            aria-expanded="false"
+            aria-controls="more"
+        >
+            {{ 'offer.search.more' | trans }}
+        </h6>
+
+        <div id="more" class="collapse" data-parent="#accordion">
+            <div class="row">
+                <div class="col">
+                    {{ form_row(search_form.city, {attr:{'class':'form-check'}}) }}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    {{ form_row(search_form.sortDirection) }}
+                </div>
+                <div class="col">
+                    {{ form_row(search_form.sortValue) }}
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-dark">{{ 'offer.search.button.label' }}</button>
+        {{ form_end(search_form) }}
+    </div>
+</div>

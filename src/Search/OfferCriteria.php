@@ -67,6 +67,11 @@ class OfferCriteria extends AbstractCriteria
     public $userId = null;
 
     /**
+     * @var array
+     */
+    public $excludedIds = [];
+
+    /**
      * @return bool
      */
     public function hasTags(): bool
