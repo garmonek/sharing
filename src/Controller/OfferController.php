@@ -7,6 +7,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\Offer;
+use App\Entity\User;
 use App\Form\Offer\OfferType;
 use App\Form\Offer\OfferEditType;
 use App\SaveRule\OfferRule;
@@ -45,6 +46,12 @@ class OfferController extends AbstractController
         $criteria = new OfferCriteria();
         $searchForm = $this->createForm(OfferCriteriaType::class, $criteria);
         $searchForm->handleRequest($request);
+        if (! $this->isGranted(User::ROLE_ADMIN)) {
+            $user = $this->getUser();
+            if ($user) {
+                $criteria->excludeUserId = $user->getId();
+            }
+        }
 
         $offers = $searchService->search($criteria, $request);
 
@@ -189,6 +196,8 @@ class OfferController extends AbstractController
             $em->persist($offer);
             $em->flush();
 
+
+            $this->addFlash('success', 'success.offer_updated');
             return $this->redirect($request->headers->get('referer'));
         }
 

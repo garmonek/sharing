@@ -52,11 +52,18 @@ class OfferQueryBuilder extends AbstractQueryBuilder
             $this->searchWithDistrict();
         }
 
-        if ($this->criteria->userId) {
+        if (null !== $this->criteria->userId) {
             $this->builder
                 ->andWhere('o.userId = :userId')
                 ->setParameter(':userId', $this->criteria->userId, ParameterType::INTEGER);
         }
+
+        if (null !== $this->criteria->excludeUserId) {
+            $this->builder
+                ->andWhere('o.userId != :excludedUserId')
+                ->setParameter(':excludedUserId', $this->criteria->excludeUserId, ParameterType::INTEGER);
+        }
+
 
         $this->searchWithActive();
         $this->searchWithOrder();

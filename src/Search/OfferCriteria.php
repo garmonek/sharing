@@ -67,6 +67,11 @@ class OfferCriteria extends AbstractCriteria
     public $userId = null;
 
     /**
+     * @var ?int
+     */
+    public $excludeUserId = null;
+
+    /**
      * @var array
      */
     public $excludedIds = [];
