@@ -33,7 +33,7 @@ class ExchangeRequest
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Offer")
      *
-     * @Assert\Count(min = 1, max = 5)
+     * @Assert\Count(min = 0, max = 5)
      */
     private $proposals;
 

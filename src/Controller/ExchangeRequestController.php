@@ -82,7 +82,7 @@ class ExchangeRequestController extends AbstractController
     }
 
     /**
-     * @Route("/new/target/{id}", name="exchange_request_upsert", methods={"GET","POST"})
+     * @Route("/upsert/target/{id}", name="exchange_request_upsert", methods={"GET","POST"})
      *
      * @param Offer                     $offer
      * @param Request                   $request
@@ -101,7 +101,7 @@ class ExchangeRequestController extends AbstractController
 
         if ($user->getId() === $offer->getUserId()) {
             //todo trans
-            $this->addFlash('danger', 'error.you_cant_request_exchange_for_your_offer');
+            $this->addFlash('danger', 'error.you_cant_request_exchange_for_your_own_offer');
         }
 
         $exchangeRequest = $requestRepository->findOneBy(['user' => $user, 'target' => $offer])
@@ -118,7 +118,7 @@ class ExchangeRequestController extends AbstractController
             ExchangeRequestType::class,
             $exchangeRequest,
             [
-                'matchingOffers' => $exchangeOffers,
+                'matchingOffers' => $exchangeOffers->getItems(),
             ]
         );
 
@@ -135,6 +135,8 @@ class ExchangeRequestController extends AbstractController
             return $this->redirectToRoute('exchange_request_index');
         }
 
+
+        //todo change name
         return $this->render('exchange_request/new.html.twig', [
             'offer' => $offer,
             'exchange_request' => $exchangeRequest,
@@ -203,10 +205,10 @@ class ExchangeRequestController extends AbstractController
      * @param ExchangeRequest $exchangeRequest
      *
      * @return Response
+     * todo remove route and convert in templates to exchange_request_upsert
      */
     public function edit(Request $request, ExchangeRequest $exchangeRequest): Response
     {
-        //todo add prevent from adding to many requests per target&user same in createNew
         $form = $this->createForm(ExchangeRequestType::class, $exchangeRequest);
         $form->handleRequest($request);
 

@@ -5,8 +5,8 @@ namespace App\Form;
 use App\Entity\ExchangeRequest;
 use App\Entity\Offer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +28,8 @@ class ExchangeRequestType extends AbstractType
                 'class' => Offer::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'choices' => $options['matchingOffers'],
+                'choices' => $this->getProposals($options),
+                'required' => false
             ]);
     }
 
@@ -41,5 +42,20 @@ class ExchangeRequestType extends AbstractType
             'data_class' => ExchangeRequest::class,
             'matchingOffers' => [],
         ]);
+
+        $resolver->addAllowedTypes('matchingOffers', 'array');
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    private function getProposals(array $options): array
+    {
+        /** @var ExchangeRequest $exchangeRequest */
+        $exchangeRequest = $options['data'];
+        $originalProposals = $exchangeRequest->getProposals();
+
+        return $originalProposals->count() ? $originalProposals->toArray() : $options['matchingOffers'];
     }
 }
