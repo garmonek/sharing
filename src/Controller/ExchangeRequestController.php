@@ -205,7 +205,6 @@ class ExchangeRequestController extends AbstractController
      * @param ExchangeRequest $exchangeRequest
      *
      * @return Response
-     * todo remove route and convert in templates to exchange_request_upsert
      */
     public function edit(Request $request, ExchangeRequest $exchangeRequest): Response
     {
