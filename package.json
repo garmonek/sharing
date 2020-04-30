@@ -16,7 +16,7 @@
     "dependencies": {
         "bootstrap": "^4.4.1",
         "javascript-flex-images": "^1.0.2",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "lightbox2": "^2.11.1",
         "popper.js": "^1.16.1",
         "select2": "^4.0.13"
